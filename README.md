@@ -18,7 +18,7 @@ L’objectif de TeamTask est de faciliter le travail collaboratif en offrant :
 - Des fonctionnalités de **filtrage et classement** des tâches  
 - Un **compteur de tâches** pour suivre la progression  
 
-## 👩‍💻 Fonctionnalités principales
+## 💻 Fonctionnalités principales
 
 1. **Connexion et espace partagé**  
    - Chaque membre peut se connecter et accéder à un espace commun.  
