@@ -29,7 +29,7 @@ class User
     {
         $motDePassHach = password_hash($motDePass, PASSWORD_BCRYPT);
         $result = pg_query_params($this->db_conn,
-        "INSERT INTO users (nom, presnom, email, password, dob) VALUES ($1,$2,$3,$4,$5)",
+        "INSERT INTO users (nom, prenom, email, password, dob) VALUES ($1,$2,$3,$4,$5)",
         [$nom, $prenom, $email, $motDePassHach, $dod]);
 
         return $result;

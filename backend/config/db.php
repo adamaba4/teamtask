@@ -11,11 +11,11 @@
     $password = '';
     $port = '5432';
     */
-
-    $hostname = 'localhost';
-    $db_name = 'teamtask';
-    $user = 'dandelion';
-    $password = 'pETITLAPINÀ&@';
+       
+    $hostname = '';
+    $db_name = '';
+    $user = '';
+    $password = '';
     $port = '5432';
 
 
@@ -24,4 +24,4 @@
     {
         die("Échec de la connexion");
     }
-    echo "Connexion établie avec succes !";
+    
