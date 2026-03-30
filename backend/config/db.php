@@ -11,11 +11,11 @@
     $password = '';
     $port = '5432';
     */
-       
-    $hostname = '';
-    $db_name = '';
-    $user = '';
-    $password = '';
+
+    $hostname = 'localhost';
+    $db_name = 'teamtask';
+    $user = 'dandelion';
+    $password = 'pETITLAPINÀ&@';
     $port = '5432';
 
 
