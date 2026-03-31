@@ -12,14 +12,24 @@
 </head>
 
 <body>
+
+
     <div class="login">
         <div class="gauche">
-            <img src="connexion.jpg" alt="image_connexion">
-            <h1>CONNEXION</h1>
+            <div class="logo">
+                <img src="connexion.jpg" alt="image_connexion">
+                <h1 class="app-name">TeamTask</h1>
+            </div>
+            <div>
+                <p class="text1">Gérez vos projets en équipe, simplement.</p>
+               <p class="text2">Connectez-vous pour découvrir vos nouveaux outils de collaboration.</p>
+            </div>
         </div>
 
         <div class="droite">
             <form id="connexion">
+                <h2>CONNEXION</h2>
+               
                 <div class="mail">
                     <label>Adresse mail : </label>
                     <input type="email" id="email" name="email" placeholder="nom@email.com" required>
@@ -31,7 +41,11 @@
                         required>
                 </div>
 
+                <div id="msg-erreur" class="error-msg"></div>
+
                 <button type="submit">Se connecter</button>
+
+                <p class="footer-text">Nouveau sur TeamTask ? <a href="inscription.html">Créer un compte</a></p>
             </form>
         </div>
     </div>

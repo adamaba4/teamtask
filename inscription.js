@@ -2,6 +2,7 @@
 
 async function envoyerdata(form, nomAction) {
     const formu = document.getElementById(form);
+    const msgerror= document.getElementById("msg-erreur");
     
     formu.addEventListener('submit', async (e) => {
         e.preventDefault(); // Pour ne pas recharger la page
@@ -20,21 +21,22 @@ async function envoyerdata(form, nomAction) {
              //Récupération des réponses
             const result = await response.json();
 
-            if (result.success) {
-                alert("Bienvenue !" + result.message);
-                
-                // Si c'est une connexion réussie, on peut rediriger l'utilisateur
+            //verfier les données
+                 if (result.success) {
                     setTimeout(() => {
                         window.location.href = "accueil.html"; // Change vers ta page d'accueil
                     }, 1500);
-            } else {
-                alert("Error :" + result.message);
-            }
+                } else {
+                    msgerror.textContent=result.message;
+                    msgerror.className = "error-msg show-error";  
+                } 
+         
+              
         } catch (error) {
             console.error("Erreur technique :", error);
         }
-    });
-}
+});
+};
 
 // On active 
 envoyerdata('inscription', 'inscription');

@@ -8,6 +8,8 @@ window.addEventListener("load", () => {
     //Récupération du formulaire
     form = document.getElementById("connexion");
 
+    const msgerror= document.getElementById("msg-erreur");
+
 
     form.addEventListener("submit", function (e) {
         e.preventDefault(); //la page ne se recharge pas
@@ -38,7 +40,8 @@ window.addEventListener("load", () => {
                         window.location.href = "accueil.html"; // Change vers ta page d'accueil
                     }, 1500);
                 } else {
-                    console.log(result.message);
+                    msgerror.textContent=result.message;
+                    msgerror.className = "error-msg show-error";  
                 }
             })
             /*
