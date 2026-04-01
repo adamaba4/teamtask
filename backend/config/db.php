@@ -1,9 +1,5 @@
 <?php
     /*
-    Nasifa, c'est le fichier de connexion à la base.
-    pense à mettre en commentaire mes identifiants, et tu peux compléter ici tes identifiant.
-    avant de compiler le fichier, si c'est pas fait installe l'extension ph pour postgresql, avec cette commande.
-     sudo apt install php-pgsql
 
     $hostname = 'localhost';
     $db_name = '';
