@@ -24,7 +24,7 @@ async function envoyerdata(form, nomAction) {
             //verfier les données
                  if (result.success) {
                     setTimeout(() => {
-                        window.location.href = "accueil.html"; // Change vers ta page d'accueil
+                        window.location.href = "connexion.html"; // Change vers ta page d'accueil
                     }, 1500);
                 } else {
                     msgerror.textContent=result.message;

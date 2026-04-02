@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Tableau de bord </title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+      <!-- le sidebar à gauche -->
+      <aside class="sidebar">
+          <div class="sidebar-header">
+              <h2 class="logo"> TeamTask</h2>
+              <p class="name-project"> <!-- rempli dynamiquement par js--></p>
+          </div>
+          <nav class="sidebar-nav">
+              <a href="dashboard.html" class="nav-item active"><span class="nav-icon">◧</span> Tableau de bord
+              </a>
+
+              <a href="#" class="nav-item"> <span class="nav-icon">☑</span> Tâches
+              </a>
+
+              <a href="#" class="nav-item"> <span class="nav-icon">◈</span> Messagerie
+              </a>
+
+              <a href="#" class="nav-item"><span class="nav-icon">◉</span> Forum
+              </a>
+          </nav>
+
+          <div class="sidebar-members">
+              <p class="members-title">MEMBRES</p>
+              <div id="members-list">
+                  <!-- rempli dynamiquement par js -->
+              </div>
+          </div>
+
+          <div class="sidebar-user">
+              <div class="user-avatar" id="user-avatar"></div>
+              <div class="user-info">
+                  <span class =user-name id="user-name">PAR JS</span>
+                  <a href="#" id="btn-deconnexion" class="user-logout">Déconnexion</a>
+              </div>
+          </div>
+
+      </aside>
+      <!-- le contenu principal à droite-->
+
+      <main class="main-content">
+            <!--en tête-->
+          <div class="header">
+              <div>
+                  <h1>Tableau de bord</h1>
+                  <p class="header-sub"id="header-welcome"> Bienvenue</p>
+              </div>
+              <button class="btn-primary" id="btn-new-task">+ Nouvelle tâche</button>
+
+          </div>
+
+
+            <!-- les cartes statistiques -->
+
+          <div class="grille-stat">
+
+              <div class="carte">
+                  <div class="carte-stat">
+                      <span class="icon">📋</span>
+                      <span class="compteur">0</span>
+                  </div>
+                  <p class="label">À faire</p>
+              </div>
+
+              <div class="carte">
+                  <div class="carte-stat">
+                      <span class="icon">⏳</span>
+                      <span class="compteur"> 0</span>
+                  </div>
+                  <p class="label">En cours</p>
+              </div>
+
+              <div class="carte">
+                  <div class="carte-stat">
+                      <span class="icon">✅</span>
+                      <span class="compteur"> 0</span>
+                  </div>
+                  <p class="label">Terminées</p>
+              </div>
+
+              <div class="carte">
+                  <div class="carte-stat">
+                  <span class="icon">📅</span>
+                  <span class="compteur">0</span>
+                  </div>
+                  <p class="label">Réunions ce mois</p>
+              </div>
+
+          </div>
+          <!--Grille calendrier + panneau latéral-->
+      </main>
+
+</body>
+</html>

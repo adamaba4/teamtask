@@ -8,11 +8,10 @@
     $port = '5432';
     */
     $hostname = 'localhost';
-    $db_name = '';
+    $db_name = 'teamtask';
     $user = '';
     $password = '';
     $port = '5432';
-
 
 
 
