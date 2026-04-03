@@ -299,3 +299,149 @@ body{
 .task-msg.error {
     color: #e17055;
 }
+
+/* Calendrier */
+/* ==================== GRILLE CALENDRIER + PANNEAU ==================== */
+.calendrier-panneau {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 20px;
+    margin-top: 28px;
+}
+
+/* ==================== CALENDRIER ==================== */
+.calendrier {
+    background: linear-gradient(135deg, #0a2e38, #0B3948,#7a9aa8);
+    border: 1px solid #1a4a5a;
+    border-radius: 16px;
+    padding: 35px;
+}
+
+.calendrier_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.calendrier_header h3 {
+    color: #d4c4b0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.calendrier_header button {
+    background: none;
+    border: 1px solid #1a4a5a;
+    color: #b7aca0;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.calendrier_header button:hover {
+    background: rgba(151, 122, 98, 0.15);
+    border-color: #977A62;
+}
+
+.calendrier_grille {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    text-align: center;
+}
+
+.calendrier_jour_nom {
+    color: #5a7a8a;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 10px 0;
+    letter-spacing: 0.5px;
+}
+
+.calendrier_jour {
+    padding: 12px 6px;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #b7aca0;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calendrier_jour:hover {
+    background: rgba(151, 122, 98, 0.12);
+}
+
+.calendrier_jour.vide {
+    cursor: default;
+}
+
+.calendrier_jour.vide:hover {
+    background: none;
+}
+
+/* ==================== LEGENDE ==================== */
+.calendrier-legende {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #1a4a5a;
+    font-size: 0.75rem;
+    color: #7a9aa8;
+}
+
+.legende-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.legende-point-meeting,
+.legende-point-deadline {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.legende-point-meeting {
+    background: #6c5ce7;
+}
+
+.legende-point-deadline {
+    background: #f0a500;
+}
+
+/* ==================== PANNEAU LATERAL ==================== */
+.panneau {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.detail-jour,
+.deadlines {
+    background: linear-gradient(135deg, #0a2e38, #0B3948);
+    border: 1px solid #1a4a5a;
+    border-radius: 16px;
+    padding: 22px;
+}
+
+.detail-jour h4,
+.deadlines h4 {
+    color: #d4c4b0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 14px;
+}

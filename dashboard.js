@@ -1,8 +1,14 @@
 let user_id = null
 let projet_id = null
+let moisCourrant = 3
+let anneeCourrante = 2026
+let jourSelectionne = null
+const MOIS =["janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre" ]
 
 document.addEventListener("DOMContentLoaded",async ()=> {
     deconnexion();
+    afficherCalendrier();
+    navigationCalendrier();
     await verifierConnexion();
     await recupererProjet();
     chargerMembres();
@@ -189,3 +195,48 @@ function deconnexion() {
 
      })
 }
+
+function afficherCalendrier(){
+    let nbJours = new Date(anneeCourrante, moisCourrant + 1, 0).getDate();
+    let premierJour = new Date(anneeCourrante, moisCourrant,1).getDay();
+    let offset = (premierJour === 0) ? 6 : premierJour - 1;
+
+    let container = document.getElementById("calendrier_jours");
+    let html = "";
+
+    // les cases vides avant le premier jour
+    for (let i = 0; i < offset; i++) {
+        html += '<div class="calendrier_jour vide"></div>';
+    }
+
+    //les jours du mois
+    for(let jour= 1; jour<= nbJours; jour++) {
+        html += `<div class="calendrier_jour"><span>${jour}</span></div>`;
+    }
+    container.innerHTML = html;
+}
+function navigationCalendrier() {
+    let btnPrev = document.getElementById("calendrier_prev");
+    let btnNext = document.getElementById("calendrier_next");
+    let calTitre = document.getElementById("calendrier_titre");
+
+    btnPrev.addEventListener("click", () => {
+        moisCourrant--;
+        if (moisCourrant < 0) {
+            moisCourrant = 11;
+            anneeCourrante--;
+        }
+        calTitre.textContent = MOIS[moisCourrant] + " " + anneeCourrante;
+        afficherCalendrier();
+    })
+    btnNext.addEventListener("click", () => {
+        moisCourrant++;
+        if (moisCourrant > 11) {
+            moisCourrant = 0;
+            anneeCourrante++;
+        }
+        calTitre.textContent = MOIS[moisCourrant] + " " + anneeCourrante;
+        afficherCalendrier();
+    })
+}
+

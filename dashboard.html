@@ -37,7 +37,7 @@
               <div class="user-avatar" id="user-avatar"></div>
               <div class="user-info">
                   <span class =user-name id="user-name"></span>
-                  <a href="#" id="btn-deconnexion" class="user-logout">Déconnexion</a href="#">
+                  <a href="#" id="btn-deconnexion" class="user-logout">Déconnexion</a>
               </div>
           </div>
 
@@ -94,6 +94,58 @@
 
           </div>
           <!--Grille calendrier + panneau latéral-->
+
+          <div class="calendrier-panneau">
+              <!-- calendrier-->
+              <div class="calendrier">
+
+                  <div class="calendrier_header">
+                      <button id="calendrier_prev">‹</button>
+                      <h3 id="calendrier_titre"> Avril 2026</h3>
+                      <button id="calendrier_next">›</button>
+                  </div>
+
+                  <div class="calendrier_grille" >
+                      <div class="calendrier_jour_nom">Lun</div>
+                      <div class="calendrier_jour_nom">Mar</div>
+                      <div class="calendrier_jour_nom">Mer</div>
+                      <div class="calendrier_jour_nom">Jeu</div>
+                      <div class="calendrier_jour_nom">Ven</div>
+                      <div class="calendrier_jour_nom">Sam</div>
+                      <div class="calendrier_jour_nom">Dim</div>
+                  </div>
+
+                  <div class="calendrier_grille" id="calendrier_jours"></div>
+
+                  <div class="calendrier-legende">
+                      <span class="legende-item">
+                          <span class="legende-point-meeting"></span>
+                          Réunion
+                      </span>
+                      <span class="legende-item">
+                          <span class="legende-point-deadline"></span>
+                          Deadline
+                      </span>
+                  </div>
+              </div>
+
+              <!-- le panneau latéral-->
+              <div class="panneau">
+
+                  <div class="detail-jour">
+                      <h4 id="detail-jour-titre">Sélectionnez un jour</h4>
+                      <div id="detail-jour-list"></div>
+
+                  </div>
+
+                  <div class="deadlines">
+                      <h4>⏰ Deadlines à venir </h4>
+                      <div id="deadlines-list"></div>
+
+                  </div>
+              </div>
+          </div>
+
       </main>
       <!-- le modal/popup-->
      <div class="modal-overlay" id="modal-overlay">
