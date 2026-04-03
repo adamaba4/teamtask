@@ -11,7 +11,7 @@ switch ($action)
     //CREER UNE TACHE
     case 'create_task':
         //Récupère les informations de la tâche
-        $user_id    =  $_SESSION['id_user'];
+        $user_id    =  1;
         $nom         = $_POST['nom'];
         $description = $_POST['description'];
         $is_public   = $_POST['is_public'];
@@ -50,6 +50,6 @@ switch ($action)
         $projet_id = $_POST['id_projet'];
         $counts = $tache->countTasksByStatus($user_id, $projet_id);
         echo json_encode(array_merge(['success' => true], $counts)); //pour avoir un seul tableau
-        break;
-        
+        break;       
 }
+?>
