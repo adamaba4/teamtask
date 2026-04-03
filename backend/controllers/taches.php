@@ -46,10 +46,10 @@ switch ($action)
 
     //NOMBRE DE TACHES SELON LE STATUT
     case 'count_tasks':
-    $user_id = $_POST['id_user'];
-    $projet_id = $_POST['id_projet'];
-    $counts = $tache->countTasksByStatus($user_id, $projet_id);
-    echo json_encode(array_merge(['success' => true], $counts)); //pour avoir un seul tableau
-    break;
-    
+        $user_id = $_POST['id_user'];
+        $projet_id = $_POST['id_projet'];
+        $counts = $tache->countTasksByStatus($user_id, $projet_id);
+        echo json_encode(array_merge(['success' => true], $counts)); //pour avoir un seul tableau
+        break;
+        
 }
