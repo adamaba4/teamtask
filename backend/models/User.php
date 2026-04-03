@@ -45,4 +45,12 @@ class User
         return $result;
     }
 
+    // Récupérer les infos de l'utilisateur connecté
+    public function getUserById($user_id){
+        $result = pg_query_params($this->db_conn,
+            "SELECT id, nom, prenom, email, dob FROM users WHERE id = $1",
+            [$user_id]);
+        return pg_fetch_assoc($result);
+    }
+
 }

@@ -26,9 +26,8 @@
             return $result;
         }
 
-        // Récupère le nombre de tâches terminées d'un utilisateur
-        public function countTasksFinished($user_id)
-        {
+        //nombre de tâches terminées d'un utilisateur
+        public function countTasksFinished($user_id){
             $result = pg_query_params(
                 $this->db_conn,
                 "SELECT COUNT(*) as total FROM taches WHERE user_id = $1 AND status = 'terminee'",
@@ -38,6 +37,16 @@
             $row = pg_fetch_assoc($result); //recupere 
             return (int)$row['total']; //on renvoie le nombre total
         }
-            }
+
+         // Nombre de tâches en cours d'un utilisateur
+        public function countTasksTodo($user_id){
+            $result = pg_query_params($this->db_conn,
+                "SELECT COUNT(*) as total FROM taches WHERE user_id = $1 AND status = 'en_cours'",
+                [$user_id]);
+            $row = pg_fetch_assoc($result);
+            return (int)$row['total'];
+    }
+     }
+
 
 ?>
