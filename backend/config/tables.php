@@ -22,13 +22,13 @@ require_once 'db.php';
         start_date  DATE,
         end_date    DATE,
         category    VARCHAR(50),
-        projet_id   INT,
+        projet_name VARCHAR(150),
         status      VARCHAR(20) DEFAULT 'en_cours' CHECK (status IN ('en_cours', 'terminee', 'en_retard')),
         priority    VARCHAR(10) DEFAULT 'normale' CHECK (priority IN ('basse', 'normale', 'haute')),
         color       VARCHAR(7) DEFAULT '#3498db',
         create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id)
-        FOREIGN KEY (projet_id) REFERENCES projet(id)
+        FOREIGN KEY (projet_name) REFERENCES projet(nom)
     )",
 
     "CREATE TABLE projet (
