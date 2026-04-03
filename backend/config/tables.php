@@ -28,6 +28,41 @@ require_once 'db.php';
         create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id)
     )",
+
+    "CREATE TABLE projet (
+    id          SERIAL PRIMARY KEY,
+    nom         VARCHAR(150) NOT NULL,
+    description TEXT,
+    user_id     INT NOT NULL,  
+    start_date  DATE,
+    end_date    DATE,
+    status      VARCHAR(20) DEFAULT 'en_cours',
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+    )",
+
+    "CREATE TABLE projet_membre (
+        id         SERIAL PRIMARY KEY,
+        projet_id  INT NOT NULL,
+        user_id    INT NOT NULL,
+        role       VARCHAR(50) DEFAULT 'membre', 
+        FOREIGN KEY (projet_id) REFERENCES projet(id),
+        FOREIGN KEY (user_id) REFERENCES users(id)
+    )",
+
+   " CREATE TABLE reunion (
+    id          SERIAL PRIMARY KEY,
+    projet_id   INT,
+    user_id     INT NOT NULL,  
+    titre       VARCHAR(150) NOT NULL,
+    description TEXT,
+    date_reunion TIMESTAMP NOT NULL,
+    lieu        VARCHAR(255),
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (projet_id) REFERENCES projet(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+    )",
+
     "CREATE TABLE messages (
         id          SERIAL PRIMARY KEY,
         sender_id   INT NOT NULL,
