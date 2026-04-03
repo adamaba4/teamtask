@@ -44,18 +44,12 @@ switch ($action)
         break;
     
 
-    //NOMBRE DE TACHE TERMINEES D'UN UTILISATEUR
-    case 'count_task_finished':
-        $user_id = $_SESSION['id_user'];
-        $total = $tache->countTasksFinished($user_id);
-        echo json_encode(["success" => true, "total" => $total]);
-        break;
-
-    // NOMBRE DE TÂCHES À FAIRE D'UN UTILISATEUR
-    case 'count_a_faire':
-        $user_id = $_SESSION['id_user'];
-        $total = $tache->countTasksTodo($user_id);
-        echo json_encode(["success" => true, "total" => $total]);
-        break;
+    //NOMBRE DE TACHES SELON LE STATUT
+    case 'count_tasks':
+    $user_id = $_POST['id_user'];
+    $projet_id = $_POST['id_projet'];
+    $counts = $tache->countTasksByStatus($user_id, $projet_id);
+    echo json_encode(array_merge(['success' => true], $counts)); //pour avoir un seul tableau
+    break;
     
 }
