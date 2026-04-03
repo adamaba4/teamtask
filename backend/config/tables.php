@@ -13,6 +13,42 @@ require_once 'db.php';
         created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )",
 
+    
+        "CREATE TABLE projet (
+        id          SERIAL PRIMARY KEY,
+        nom         VARCHAR(150) NOT NULL,
+        description TEXT,
+        user_id     INT NOT NULL,  
+        start_date  DATE,
+        end_date    DATE,
+        status      VARCHAR(20) DEFAULT 'en_cours',
+        created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+        )",
+
+        "CREATE TABLE projet_membre (
+            id         SERIAL PRIMARY KEY,
+            projet_id  INT NOT NULL,
+            user_id    INT NOT NULL,
+            role       VARCHAR(50) DEFAULT 'membre', 
+            FOREIGN KEY (projet_id) REFERENCES projet(id),
+            FOREIGN KEY (user_id) REFERENCES users(id)
+        )",
+
+    " CREATE TABLE reunion (
+        id          SERIAL PRIMARY KEY,
+        projet_id   INT,
+        user_id     INT NOT NULL,  
+        titre       VARCHAR(150) NOT NULL,
+        description TEXT,
+        date_reunion TIMESTAMP NOT NULL,
+        lieu        VARCHAR(255),
+        created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (projet_id) REFERENCES projet(id),
+        FOREIGN KEY (user_id) REFERENCES users(id)
+        )",
+
+
      "CREATE TABLE  taches (
         id          SERIAL PRIMARY KEY,
         user_id     INT NOT NULL,
@@ -22,12 +58,15 @@ require_once 'db.php';
         start_date  DATE,
         end_date    DATE,
         category    VARCHAR(50),
+        projet_id    INT NOT NULL,
         status      VARCHAR(20) DEFAULT 'en_cours' CHECK (status IN ('en_cours', 'terminee', 'en_retard')),
         priority    VARCHAR(10) DEFAULT 'normale' CHECK (priority IN ('basse', 'normale', 'haute')),
         color       VARCHAR(7) DEFAULT '#3498db',
         create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES users(id)
+        FOREIGN KEY (user_id) REFERENCES users(id),
+        FOREIGN KEY (projet_id) REFERENCES projet(id)
     )",
+
     "CREATE TABLE messages (
         id          SERIAL PRIMARY KEY,
         sender_id   INT NOT NULL,
