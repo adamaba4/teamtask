@@ -1,20 +1,23 @@
 let user_id = null
-let projet_id = null
+let projet_id = 1  /* JE N'AI PAS ENCORE GÉRER L'AFFICHAGE DU NOM DE PROJET CHOISI*/
 let moisCourrant = 3
 let anneeCourrante = 2026
 let jourSelectionne = null
 const MOIS =["janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre" ]
-
+const COULEURS_AVATAR = ["#6c5ce7", "#00b894", "#fd79a8", "#fdcb6e", "#e17055", "#0984e3"];
 document.addEventListener("DOMContentLoaded",async ()=> {
-    deconnexion();
+
+
+
+    await verifierConnexion();
+    chargerMembres();
+    nouvelleTache();
+    chargerCartes();
+
     afficherCalendrier();
     navigationCalendrier();
-    await verifierConnexion();
-    await recupererProjet();
-    chargerMembres();
-    chargerCartes();
-    nouvelleTache();
 
+    deconnexion();
 
 
 });
@@ -25,22 +28,23 @@ document.addEventListener("DOMContentLoaded",async ()=> {
 async function verifierConnexion() {
     try {
         let data = new FormData();
-        data.append("action", "verifier_session");
+        data.append("action", "get_user_data");
 
-        const response = await fetch("backend/controllers/auth.php", {
+        const response = await fetch("backend/controllers/user.php", {
             method: "POST",
             body: data
         });
 
         const result = await response.json();
 
+
         if (!result.success) {
             window.location.href = "connexion.html";
         } else {
-            user_id = result.id;
-            document.getElementById("header-welcome").textContent = "Bienvenue, " + result.prenom + " !";
-            document.getElementById("user-avatar").textContent = result.prenom[0] + result.nom[0];
-            document.getElementById("user-name").textContent = result.prenom + " " + result.nom;
+            user_id = result.user.id;
+            document.getElementById("header-welcome").textContent = "Bienvenue, " + result.user.prenom + " !";
+            document.getElementById("user-avatar").textContent = result.user.prenom[0].toUpperCase() + result.user.nom[0].toUpperCase();
+            document.getElementById("user-name").textContent = result.user.prenom + " " + result.user.nom;
         }
     } catch (error) {
         console.error("Erreur :", error);
@@ -50,56 +54,51 @@ async function verifierConnexion() {
 
 async function chargerMembres() {
     let data = new FormData();
-    data.append("action", "get_all_members")
-    data.append("id_projet", projet_id)
+    data.append("action", "get_members_of_project")
+    data.append("projet_id", projet_id)
 
-    const response = await fetch("backend/controllers/project.php", {
+
+    const response = await fetch("backend/controllers/projet.php", {
         method: "POST",
         body: data
     })
 
     const result = await response.json();
+    console.log(result)
+
     if (result.success) {
         let container = document.getElementById("members-list");
 
-        for( let i = 0; i < result.membres.length; i++) {
-            let membre = result.membres[i]
-            container.innerHTML += `
+        for( let i = 0; i < result.members.length; i++) {
+            let membre = result.members[i]
+            if(result.members[i].id !== user_id) {
+                let couleur = COULEURS_AVATAR[i % COULEURS_AVATAR.length];
+
+                container.innerHTML += `
             <div class="member-row"> 
-                <div class="member-avatar">${membre.prenom[0] + membre.nom[0]}</div>
-                <span class = "member-name">${membre.prenom} ${membre.nom }</span>
+                <div class="member-avatar" style="background: ${couleur};">${membre.prenom[0].toUpperCase()+ membre.nom[0].toUpperCase()}</div>
+                <span class = "member-name">${membre.prenom} ${membre.nom[0].toUpperCase()}</span>
             
             </div>`
+            }
+
         }
 
     }
-}
 
-async function recupererProjet() {
-    let data = new FormData();
-    data.append("action", "get_project")
-
-    const response = await fetch("backend/controllers/project.php", {
-        method: "POST",
-        body: data
-    })
-    const result = await response.json();
-    if (result.success) {
-        projet_id = result.id;
-        document.getElementById("name-project").textContent = result.nom
-    }
 }
 
 async function chargerCartes() {
     let data = new FormData();
     data.append("action", "count_tasks")
-    data.append("id_projet", projet_id)
-    data.append("id_user", user_id)
-    const response = await fetch("backend/controllers/task.php", {
+    data.append("projet_id", projet_id)
+    data.append("user_id", user_id)
+    const response = await fetch("backend/controllers/taches.php", {
         method: "POST",
         body: data
     })
     const result = await response.json();
+    console.log(result)
     if (result.success) {
         document.getElementById("compteur-late").textContent = result.en_retard;
         document.getElementById("compteur-done").textContent = result.terminee;
@@ -108,23 +107,28 @@ async function chargerCartes() {
 
     let data2 = new FormData();
     data2.append("action", "count_meetings")
-    data2.append("id_projet", projet_id)
+    data2.append("projet_id", projet_id)
     const response2 = await fetch("backend/controllers/projet.php", {
         method: "POST",
         body: data2
     })
 
     const result2  = await response2.json();
+
     if (result2.success) {
         document.getElementById("compteur-meetings").textContent = result2.count;
     }
+
 }
+
+
+
 
 function nouvelleTache() {
     const overlay = document.getElementById("modal-overlay");
     const modalClose = document.getElementById("modal-close");
     const bntNewTask = document.getElementById("btn-new-task");
-    const form = document.getElementById("form-new-task");
+    const form = document.getElementById("new-task-form");
     const msgError = document.getElementById("task-msg");
 
     bntNewTask.addEventListener("click", () => {
@@ -146,9 +150,9 @@ function nouvelleTache() {
          try {
              let data = new FormData(form);
              data.append("action", "create_task");
-             data.append("id_projet", projet_id);
-             data.append("id_user", user_id);
-             const response = await fetch("backend/controllers/task.php", {
+             data.append("projet_id", projet_id);
+             data.append("user_id", user_id);
+             const response = await fetch("backend/controllers/taches.php", {
                  method: "POST",
                  body: data
              })
@@ -201,6 +205,8 @@ function afficherCalendrier(){
     let premierJour = new Date(anneeCourrante, moisCourrant,1).getDay();
     let offset = (premierJour === 0) ? 6 : premierJour - 1;
 
+    let aujourdhui = new Date();
+    let estMoisCourrant = (aujourdhui.getFullYear() === anneeCourrante && aujourdhui.getMonth() === moisCourrant);
     let container = document.getElementById("calendrier_jours");
     let html = "";
 
@@ -211,9 +217,17 @@ function afficherCalendrier(){
 
     //les jours du mois
     for(let jour= 1; jour<= nbJours; jour++) {
-        html += `<div class="calendrier_jour"><span>${jour}</span></div>`;
+        let estAujourdhui = jour === aujourdhui.getDate() && estMoisCourrant;
+        html += `<div class="calendrier_jour ${estAujourdhui ? 'aujourdhui' : ''}" onclick="selectionnerJour(${jour})">
+            <span>${jour}</span>
+         </div>`;
     }
     container.innerHTML = html;
+}
+function selectionnerJour(jour) {
+    jourSelectionne = jour;
+    afficherCalendrier()
+    document.getElementById("detail-jour-titre").textContent = jour + " " + MOIS[moisCourrant] + " " + anneeCourrante;
 }
 function navigationCalendrier() {
     let btnPrev = document.getElementById("calendrier_prev");

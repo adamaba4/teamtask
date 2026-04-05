@@ -49,7 +49,7 @@ switch ($action)
         } else {
                 echo json_encode([
                     "success" => false, "message" => "Erreur lors de la création"]);
-                     error_log(pg_last_error($this->db_conn));
+                     error_log(pg_last_error($db_conn));
             }
         
         break;
