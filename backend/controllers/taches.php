@@ -103,6 +103,14 @@ switch ($action)
         }
         break;
 
+    case 'get_tasks_by_month':
+        $projet_id = isset($_POST['projet_id']) ? (int)$_POST['projet_id'] : null;
+        $mois = isset($_POST['mois']) ? (int)$_POST['mois'] : null;
+        $annee = isset($_POST['annee']) ? (int)$_POST['annee'] : null;
+        $result = $tache->getTaskByMonth($projet_id, $user_id, $mois, $annee);
+        echo json_encode(["success" => true, "tasksByMonth" => $result]);
+        break;
+
 }
 
 ?>

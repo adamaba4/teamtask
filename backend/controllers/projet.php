@@ -80,6 +80,16 @@ switch ($action) {
             $result = $projet->countMeetings($projet_id);
             echo json_encode(["success" => true, "count" => $result]);
             break;
+
+        case 'get_meetings_by_month':
+            $projet_id = isset($_POST['projet_id']) ? (int)$_POST['projet_id'] : null;
+            $mois = isset($_POST['mois']) ? (int)$_POST['mois'] : null;
+            $annee = isset($_POST['annee']) ? (int)$_POST['annee'] : null;
+            $result = $projet->getMeetingsByMonth($projet_id, $mois, $annee);
+            echo json_encode(["success" => true, "meetingsByMonth" => $result]);
+            break;
     }
+
+
 
 ?>

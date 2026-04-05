@@ -83,7 +83,18 @@
                 [$projet_id]);
             $row = pg_fetch_assoc($result);
             return $row ? (int)$row['total'] : 0; //0 si ya pas de reunions             
-        }                
+        }
+
+        public function getMeetingsByMonth($projet_id, $mois, $annee) {
+            $result = pg_query_params($this->db_conn, "
+        SELECT * 
+        FROM reunion
+        WHERE projet_id = $1 
+        AND EXTRACT(MONTH FROM date_reunion) = $2 
+        AND EXTRACT(YEAR FROM date_reunion) = $3", [$projet_id, $mois, $annee]);
+            $rows = pg_fetch_all($result);
+            return $rows ?: [];
+        }
             
 
     }

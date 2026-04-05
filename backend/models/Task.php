@@ -121,6 +121,22 @@
             return pg_affected_rows($result) > 0;
         }
 
+        public function getTaskByMonth($projet_id, $user_id, $month, $year) {
+            $result = pg_query_params($this->db_conn, "
+        SELECT t.*, u.nom AS username, u.prenom
+        FROM taches t
+        JOIN users u ON u.id = t.user_id
+        WHERE t.projet_id = $1
+        AND (t.is_public = TRUE OR t.user_id = $2)
+        AND (
+            (EXTRACT(MONTH FROM t.end_date) = $3 AND EXTRACT(YEAR FROM t.end_date) = $4)
+            OR 
+            (EXTRACT(MONTH FROM t.start_date) = $3 AND EXTRACT(YEAR FROM t.start_date) = $4)
+        )", [$projet_id, $user_id, $month, $year]);
+            $rows = pg_fetch_all($result);
+            return $rows ?: [];
+        }
+
 }
 
 ?>
