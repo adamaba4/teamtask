@@ -411,6 +411,7 @@ body{
     min-height: 44px;
     display: flex;
     align-items: center;
+    flex-direction: column;
     justify-content: center;
 }
 
@@ -422,10 +423,31 @@ body{
     cursor: default;
 }
 
+
 .calendrier_jour.vide:hover {
     background: none;
 }
 
+.cal-dots {
+    display: flex;
+    justify-content: center;
+    gap: 3px;
+    margin-top: 4px;
+}
+
+.dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+}
+
+.dot.meeting {
+    background: #6c5ce7;
+}
+
+.dot.deadline {
+    background: #f0a500;
+}
 /* ==================== LEGENDE ==================== */
 .calendrier-legende {
     display: flex;
@@ -480,4 +502,26 @@ body{
     font-size: 0.9rem;
     font-weight: 600;
     margin-bottom: 14px;
+}
+.deadline-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(26, 74, 90, 0.3);
+}
+
+.deadline-nom {
+    font-size: 0.8rem;
+    color: #b7aca0;
+}
+
+.deadline-jours {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #7a9aa8;
+}
+
+.deadline-jours.urgent {
+    color: #e17055;
 }

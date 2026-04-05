@@ -1,6 +1,6 @@
 let user_id = null;
 let projet_id = 1;
-let moisCourrant = new Date().getMonth();
+let moisCourrant = new Date().getMonth() ;
 let anneeCourrante = new Date().getFullYear();
 let jourSelectionne = null;
 let tachesDuMois = [];
@@ -11,26 +11,30 @@ const COULEURS_AVATAR = ["#6c5ce7", "#00b894", "#fd79a8", "#fdcb6e", "#e17055", 
 document.addEventListener("DOMContentLoaded", async () => {
     try {
         await verifierConnexion();
-        await recupererProjet();
+        /*await recupererProjet();*/
     } catch (error) {
         console.error("Erreur :", error);
     }
 
     chargerMembres();
     chargerCartes();
+    chargerDeadlines();
     nouvelleTache();
-    deconnexion();
-    afficherCalendrier();
+
+    chargerDonneesMois();
     navigationCalendrier();
+    deconnexion();
+
+
 });
 
 // Vérifier si l'utilisateur est connecté
 async function verifierConnexion() {
     try {
         let data = new FormData();
-        data.append("action", "verifier_session");
+        data.append("action", "get_user_data");
 
-        const response = await fetch("backend/controllers/auth.php", {
+        const response = await fetch("backend/controllers/user.php", {
             method: "POST",
             body: data
         });
@@ -55,7 +59,7 @@ async function recupererProjet() {
     let data = new FormData();
     data.append("action", "get_project");
 
-    const response = await fetch("backend/controllers/project.php", {
+    const response = await fetch("backend/controllers/projet.php", {
         method: "POST",
         body: data
     });
@@ -72,7 +76,7 @@ async function chargerMembres() {
     data.append("action", "get_members_of_project");
     data.append("projet_id", projet_id);
 
-    const response = await fetch("backend/controllers/project.php", {
+    const response = await fetch("backend/controllers/projet.php", {
         method: "POST",
         body: data
     });
@@ -224,16 +228,68 @@ function afficherCalendrier() {
     }
 
     // Les jours du mois
+
     for (let jour = 1; jour <= nbJours; jour++) {
         let estAujourdhui = estMoisActuel && aujourdhui.getDate() === jour;
         let estSelectionne = (jourSelectionne === jour);
 
+        // Construire la date au format YYYY-MM-DD pour comparer avec la base
+        let dateStr = anneeCourrante + "-" + String(moisCourrant + 1).padStart(2, '0') + "-" + String(jour).padStart(2, '0');
+
+        // Vérifier s'il y a des deadlines ou réunions ce jour
+        let hasDeadline = tachesDuMois.some(t => t.end_date === dateStr);
+        let hasReunion = reunionsDuMois.some(r => r.date_reunion && r.date_reunion.startsWith(dateStr));
+
+        //console.log("jour:", jour, "dateStr:", dateStr, "hasDeadline:", hasDeadline, "hasReunion:", hasReunion);
         html += `<div class="calendrier_jour ${estAujourdhui ? 'aujourdhui' : ''} ${estSelectionne ? 'selectionne' : ''}" onclick="selectionnerJour(${jour})">
                     <span>${jour}</span>
+                    <div class="cal-dots">
+                        ${hasReunion ? '<span class="dot meeting"></span>' : ''}
+                        ${hasDeadline ? '<span class="dot deadline"></span>' : ''}
+                    </div>
                  </div>`;
     }
 
     container.innerHTML = html;
+}
+// Charger les tâches et réunions du mois
+
+async function chargerDonneesMois() {
+    let data1 = new FormData();
+    data1.append("action", "get_tasks_by_month");
+    data1.append("projet_id", projet_id);
+    data1.append("mois", moisCourrant + 1);
+    data1.append("annee", anneeCourrante);
+
+    const response1 = await fetch("backend/controllers/taches.php", {
+        method: "POST",
+        body: data1
+    });
+    const result1 = await response1.json()
+
+    if (result1.success) {
+        tachesDuMois = result1.tasksByMonth
+
+    }
+
+    let data2 = new FormData();
+    data2.append("action", "get_meetings_by_month");
+    data2.append("projet_id", projet_id);
+    data2.append("mois", moisCourrant  +1);
+    data2.append("annee", anneeCourrante);
+
+    const response2 = await fetch("backend/controllers/projet.php", {
+        method: "POST",
+        body: data2
+    });
+    const result2 = await response2.json();
+
+    if (result2.success) {
+        reunionsDuMois = result2.meetingsByMonth;
+
+    }
+
+    afficherCalendrier();
 }
 
 // Sélectionner un jour
@@ -257,7 +313,7 @@ function navigationCalendrier() {
         }
         jourSelectionne = null;
         calTitre.textContent = MOIS[moisCourrant] + " " + anneeCourrante;
-        afficherCalendrier();
+        chargerDonneesMois();
     });
 
     btnNext.addEventListener("click", () => {
@@ -268,41 +324,40 @@ function navigationCalendrier() {
         }
         jourSelectionne = null;
         calTitre.textContent = MOIS[moisCourrant] + " " + anneeCourrante;
-        afficherCalendrier();
+        chargerDonneesMois();
     });
 }
 
-// Charger les tâches et réunions du mois
-async function chargerDonneesMois() {
-    let data1 = new FormData();
-    data1.append("action", "get_tasks_by_month");
-    data1.append("projet_id", projet_id);
-    data1.append("mois", moisCourrant + 1);
-    data1.append("annee", anneeCourrante);
-
-    const response1 = await fetch("backend/controllers/taches.php", {
+async function chargerDeadlines() {
+    const data = new FormData();
+    data.append("action", "get_deadlines");
+    data.append("projet_id", projet_id);
+    data.append("user_id", user_id);
+    const response = await fetch("backend/controllers/taches.php", {
         method: "POST",
-        body: data1
+        body: data
     });
-    const result1 = await response1.json();
-    if (result1.success) {
-        tachesDuMois = result1.tasksByMonth;
+    const result = await response.json();
+    if (result.success) {
+        let container = document.getElementById("deadlines-list");
+        let aujourdhui = new Date();
+        aujourdhui.setHours(0, 0, 0, 0);
+
+        for (let i = 0; i < result.deadlines.length; i++) {
+            let tache = result.deadlines[i];
+            let deadline = new Date(tache.end_date);
+            let diff = Math.ceil((deadline - aujourdhui) / (1000 * 60 * 60 * 24));
+            let joursTexte = "";
+            if (diff < 0) joursTexte = "En retard";
+            else if (diff === 0) joursTexte = "Aujourd'hui";
+            else joursTexte = diff + "j";
+
+            container.innerHTML += `
+            <div class="deadline-row">
+                <span class="deadline-nom">${tache.nom}</span>
+                <span class="deadline-jours ${diff <= 1 ? 'urgent' : ''}">${joursTexte}</span>
+            </div>`;
+        }
     }
-
-    let data2 = new FormData();
-    data2.append("action", "get_meetings_by_month");
-    data2.append("projet_id", projet_id);
-    data2.append("mois", moisCourrant + 1);
-    data2.append("annee", anneeCourrante);
-
-    const response2 = await fetch("backend/controllers/projet.php", {
-        method: "POST",
-        body: data2
-    });
-    const result2 = await response2.json();
-    if (result2.success) {
-        reunionsDuMois = result2.meetingsByMonth;
-    }
-
-    afficherCalendrier();
 }
+
