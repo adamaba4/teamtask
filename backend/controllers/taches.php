@@ -14,7 +14,7 @@ switch ($action)
     case 'my_tasks':
         $projet_id = (int)$_POST['projet_id'];
         $result = $tache->getTasksByUser($user_id, $projet_id);
-        echo json_encode(["success" => true, "tasks" => $result]); //on renvoie le tableau des taches
+        echo json_encode(["success" => true, "taches" => $result]); //on renvoie le tableau des taches
 
         break;
 
@@ -65,7 +65,7 @@ switch ($action)
      //-------------------------------------------------------------------------------------------------------------
     //La liste complete des taches d'un projet avec la personne qui s'en occupe
     case 'get_tasks':
-        $projet_id = isset($_POST['id_projet']) ? (int)$_POST['id_projet'] : null;
+        $projet_id = isset($_POST['projet_id']) ? (int)$_POST['projet_id'] : null;
         if (!$projet_id) {
             echo json_encode(["success" => false, "message" => "projet manquant"]);
             break;

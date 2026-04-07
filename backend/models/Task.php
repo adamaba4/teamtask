@@ -11,7 +11,7 @@
         //-------------------------------------------------------//
         public function getTasksByUser($user_id,$projet_id){
             $result = pg_query_params($this->db_conn,
-            "SELECT * FROM taches WHERE user_id = $1 AND projet_id=$2 ORDER BY start_date ASC",
+            "SELECT t.*, u.prenom, u.nom AS username FROM taches t LEFT JOIN users u ON u.id = t.user_id WHERE t.user_id = $1 AND t.projet_id = $2  ORDER BY t.start_date ASC",
             [$user_id,$projet_id]);
             return pg_fetch_all($result);
         }
