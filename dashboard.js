@@ -87,7 +87,9 @@ async function chargerMembres() {
 
         for (let i = 0; i < result.members.length; i++) {
             let membre = result.members[i];
-            let couleur = COULEURS_AVATAR[i % COULEURS_AVATAR.length];
+            if (membre.id === user_id) continue;
+            else
+            {   couleur = COULEURS_AVATAR[i % COULEURS_AVATAR.length];
 
             container.innerHTML += `
             <div class="member-row"> 
@@ -95,7 +97,7 @@ async function chargerMembres() {
                     ${membre.prenom[0].toUpperCase()}${membre.nom[0].toUpperCase()}
                 </div>
                 <span class="member-name">${membre.prenom} ${membre.nom}</span>
-            </div>`;
+            </div>`;}
         }
     }
 }
