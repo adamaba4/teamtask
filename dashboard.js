@@ -297,7 +297,46 @@ function selectionnerJour(jour) {
     jourSelectionne = jour;
     afficherCalendrier();
     document.getElementById("detail-jour-titre").textContent = jour + " " + MOIS[moisCourrant] + " " + anneeCourrante;
+
+    let dateStr = anneeCourrante + "-" + String(moisCourrant + 1).padStart(2, '0') + "-" + String(jour).padStart(2, '0');
+    let container = document.getElementById("detail-jour-list");
+
+    let tachesJour = tachesDuMois.filter(t => t.end_date === dateStr || t.start_date === dateStr);
+    let reunionsJour = reunionsDuMois.filter(r => r.date_reunion && r.date_reunion.startsWith(dateStr));
+
+    let html = "";
+
+    for (let i = 0; i < tachesJour.length; i++) {
+        let tache = tachesJour[i];
+        html += `
+        <div class="jour-event">
+            <div class="event-bar deadline"></div>
+            <div>
+                <div class="event-nom">${tache.nom}</div>
+                <div class="event-sub">Deadline · ${tache.prenom} ${tache.username}</div>
+            </div>
+        </div>`;
+    }
+
+    for (let i = 0; i < reunionsJour.length; i++) {
+        let reunion = reunionsJour[i];
+        html += `
+        <div class="jour-event">
+            <div class="event-bar meeting"></div>
+            <div>
+                <div class="event-nom">${reunion.titre}</div>
+                <div class="event-sub">Réunion${reunion.lieu ? ' · ' + reunion.lieu : ''}</div>
+            </div>
+        </div>`;
+    }
+
+    if (tachesJour.length === 0 && reunionsJour.length === 0) {
+        html = '<p class="empty-msg">Rien de prévu ce jour</p>';
+    }
+
+    container.innerHTML = html;
 }
+
 
 // Navigation du calendrier
 function navigationCalendrier() {
