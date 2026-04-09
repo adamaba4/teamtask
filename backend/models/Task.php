@@ -11,7 +11,7 @@
         //-------------------------------------------------------//
         public function getTasksByUser($user_id,$projet_id){
             $result = pg_query_params($this->db_conn,
-            "SELECT t.*, u.prenom, u.nom AS username FROM taches t LEFT JOIN users u ON u.id = t.user_id WHERE t.user_id = $1 AND t.projet_id = $2  ORDER BY t.start_date ASC",
+            "SELECT t.*, u.prenom, u.nom AS username FROM taches t LEFT JOIN users u ON u.id = t.user_id WHERE t.user_id = $1 AND t.projet_id = $2 AND is_public=TRUE  ORDER BY t.start_date ASC",
             [$user_id,$projet_id]);
             return pg_fetch_all($result);
         }
@@ -23,7 +23,7 @@
         public function getTasksByProject($projet_id){
             $result = pg_query_params($this->db_conn,
                 "SELECT t.*, u.prenom, u.nom AS username FROM taches t LEFT JOIN users u ON u.id = t.user_id
-                WHERE t.projet_id = $1 ORDER BY t.end_date ASC NULLS LAST", //pr mettre a la fin si la date est null
+                WHERE t.projet_id = $1 AND is_public=TRUE ORDER BY t.end_date ASC NULLS LAST", //pr mettre a la fin si la date est null
                 [$projet_id]
             );
     
@@ -137,6 +137,23 @@
             return $rows ?: [];
         }
 
+        
+        //-------------------------------------------------------//
+        // Tâches privées de l'utilisateur connecté
+         //-------------------------------------------------------//
+        public function getPrivateTasks($user_id) {
+            $result = pg_query_params($this->db_conn,
+                "SELECT t.*, u.prenom, u.nom AS username FROM taches t LEFT JOIN users u ON u.id = t.user_id
+                WHERE user_id = $1 AND is_public = false
+                ORDER BY end_date ASC NULLS LAST",
+                [$user_id]
+            );
+            $tasks = [];
+            while ($row = pg_fetch_assoc($result)) {
+                $tasks[] = $row;
+            }
+            return $tasks;
+        }
 }
 
 ?>
