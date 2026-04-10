@@ -153,6 +153,31 @@ body{
 .user-logout:hover {
     color: #e17055;
 }
+.btn-add-membre {
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    justify-content: center;
+}
+
+#btn-add-membre {
+    padding: 14px 32px;
+    border-radius: 12px;
+    border: 2px dashed #c5ddec;
+    background: transparent;
+    color: #c5ddec;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+}
+
+#btn-add-membre:hover {
+    border-color: #00b894;
+    color:  #c5ddec;
+    background: rgba(151, 122, 98, 0.08);
+}
 
 /* CONTENU PRINCIPAL */
 .main-content {

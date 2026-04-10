@@ -1,6 +1,5 @@
-
+let user_id=null;
 const COULEURS_AVATAR = ["#6c5ce7", "#00b894", "#fd79a8", "#fdcb6e", "#e17055", "#0984e3"];
-
 
 // Vérifier si l'utilisateur est connecté
 async function verifierConnexion() {
@@ -18,6 +17,7 @@ async function verifierConnexion() {
         if (!result.success) {
             window.location.href = "connexion.html";
         } else {
+            user_id = result.user.id;
             document.getElementById("header-welcome").textContent = "Bienvenue, " + result.user.prenom + " !";
             document.getElementById("user-avatar").textContent = result.user.prenom[0].toUpperCase() + result.user.nom[0].toUpperCase();
             document.getElementById("user-name").textContent = result.user.prenom + " " + result.user.nom;
@@ -61,9 +61,10 @@ async function chargerCartes() {
 
 // Charger les membres du projet
 async function chargerMembres() {
+    let estChefProjet = false;
     let data = new FormData();
     data.append("action", "get_members_of_project");
-
+    //data.append("projet_id", projet_id);
 
     const response = await fetch("backend/controllers/projet.php", {
         method: "POST",
@@ -73,11 +74,13 @@ async function chargerMembres() {
     const result = await response.json();
     if (result.success) {
         let container = document.getElementById("members-list");
-        container.innerHTML = "";
 
         for (let i = 0; i < result.members.length; i++) {
             let membre = result.members[i];
-            if (parseInt(membre.id) === parseInt(user_id)) continue;
+            if (membre.id === user_id && membre.role === "chef_de_projet")
+            {
+                estChefProjet = true;
+            }
             else
             {   couleur = COULEURS_AVATAR[i % COULEURS_AVATAR.length];
 
@@ -90,7 +93,14 @@ async function chargerMembres() {
             </div>`;}
         }
     }
+
+    if (estChefProjet) {
+        document.getElementById("btn-add-membre").style.display = "block";
+    } else {
+        document.getElementById("btn-add-membre").style.display = "none";
+    }
 }
+
 
 //Quand on change de projet, les taches de ce projet vont se remplir, 
 // et il faut aussi savoir si on clique sur mestaches ou tout
