@@ -106,4 +106,5 @@ async function changerProjet() {
 window.addEventListener("load", () => {
     chargerProjets();
 
+
 });
