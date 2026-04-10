@@ -24,6 +24,9 @@
 
               <a href="#" class="nav-item"><span class="nav-icon">◉</span> Forum
               </a>
+              <a href="projet.html" class="nav-item"><span class="nav-icon">📁</span> Mes projets
+              </a>
+
           </nav>
 
           <div class="sidebar-members">
@@ -32,6 +35,7 @@
                   <!-- rempli dynamiquement par js -->
               </div>
           </div>
+          <button class="btn-add-membre" id="btn-add-membre" style="display: none">+ Ajouter des membres</button>
 
           <div class="sidebar-user">
               <div class="user-avatar" id="user-avatar"></div>
@@ -217,6 +221,23 @@
              </form>
          </div>
      </div>
+
+      <!-- Modal ajouter un membre -->
+      <div class="modal-overlay" id="modal-membre-overlay">
+          <div class="modal">
+              <div class="modal-header">
+                  <h3>Ajouter un membre</h3>
+                  <button class="modal-close" id="modal-membre-close">&times;</button>
+              </div>
+              <p class="modal-desc">Entrez l'email de la personne à inviter. Elle doit avoir un compte TeamTask.</p>
+              <form id="form-add-membre">
+                  <label>Email du membre</label>
+                  <input type="email" name="email" placeholder="adama@mail.com" required>
+                  <div id="membre-msg" class="task-msg"></div>
+                  <button type="submit" class="btn-primary btn-full">Ajouter au projet</button>
+              </form>
+          </div>
+      </div>
 
     <script src="dashboard.js"></script>
 </body>

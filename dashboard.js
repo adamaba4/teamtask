@@ -14,8 +14,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch (error) {
         console.error("Erreur :", error);
     }
-
+    recupererProjet();
     chargerMembres();
+    ajouterMembre();
     chargerCartes();
     chargerDeadlines();
     nouvelleTache();
@@ -56,7 +57,7 @@ async function verifierConnexion() {
 // Récupérer le projet
 async function recupererProjet() {
     let data = new FormData();
-    data.append("action", "get_project");
+    data.append("action", "get_project_current");
 
     const response = await fetch("backend/controllers/projet.php", {
         method: "POST",
@@ -64,13 +65,14 @@ async function recupererProjet() {
     });
     const result = await response.json();
     if (result.success) {
-        //projet_id = result.id;
-        document.getElementById("name-project").textContent = result.nom;
+
+        document.getElementById("name-project").textContent = result.projet.nom;
     }
 }
 
 // Charger les membres du projet
 async function chargerMembres() {
+    let estChefProjet = false;
     let data = new FormData();
     data.append("action", "get_members_of_project");
     //data.append("projet_id", projet_id);
@@ -86,7 +88,10 @@ async function chargerMembres() {
 
         for (let i = 0; i < result.members.length; i++) {
             let membre = result.members[i];
-            if (membre.id === user_id) continue;
+            if (membre.id === user_id && membre.role === "chef_de_projet")
+            {
+                estChefProjet = true;
+            }
             else
             {   couleur = COULEURS_AVATAR[i % COULEURS_AVATAR.length];
 
@@ -98,6 +103,12 @@ async function chargerMembres() {
                 <span class="member-name">${membre.prenom} ${membre.nom}</span>
             </div>`;}
         }
+    }
+
+    if (estChefProjet) {
+        document.getElementById("btn-add-membre").style.display = "block";
+    } else {
+        document.getElementById("btn-add-membre").style.display = "none";
     }
 }
 
@@ -134,7 +145,7 @@ async function chargerCartes() {
     }
 }
 
-// Modal nouvelle tâche
+
 function nouvelleTache() {
     const overlay = document.getElementById("modal-overlay");
     const modalClose = document.getElementById("modal-close");
@@ -189,7 +200,54 @@ function nouvelleTache() {
         }
     });
 }
+async function ajouterMembre() {
+    const overlay = document.getElementById("modal-membre-overlay");
+    const modalClose = document.getElementById("modal-membre-close");
+    const bntAddMember = document.getElementById("btn-add-membre");
+    const form = document.getElementById("form-add-membre");
+    const msgError = document.getElementById("membre-msg");
 
+    bntAddMember.addEventListener("click", () => {
+        overlay.classList.add("show");
+    });
+    modalClose.addEventListener("click", () => {
+        overlay.classList.remove("show");
+    });
+    overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) {
+            overlay.classList.remove("show");
+        }
+    });
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        try {
+            let data = new FormData(form);
+            data.append("action", "add_member");
+            const response = await fetch("backend/controllers/projet.php", {
+                method: "POST",
+                body: data
+            });
+            const result = await response.json();
+            if (result.success) {
+                msgError.textContent = result.message;
+                msgError.className = "task-msg success";
+                setTimeout(() => {
+                    form.reset();
+                    overlay.classList.remove("show");
+                    msgError.textContent = "";
+                    chargerMembres();
+                }, 1000);
+            } else {
+                msgError.textContent = result.message;
+                msgError.className = "task-msg error";
+            }
+        } catch (error) {
+            msgError.textContent = "Erreur de connexion au serveur.";
+            msgError.className = "task-msg error";
+        }
+    });
+}
 // Déconnexion
 function deconnexion() {
     const bntDeconnexion = document.getElementById("btn-deconnexion");
