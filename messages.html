@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>TeamTask - Messagerie</title>
+  <link rel="stylesheet" href="messages.css">
+</head>
+<body>
+
+<!-- Vue 1 : Liste des contacts -->
+<div class="liste-contacts" id="liste-contacts">
+  <div class="msg-header">
+    <a href="dashboard.html" class="back-button">←</a>
+    <h1>Messagerie</h1>
+  </div>
+  <div id="contacts-list">
+    <!-- on remplit par JS les contacts -->
+  </div>
+</div>
+
+<!-- Vue 2 : Conversation -->
+<div class="conversation" id="conversation" style="display: none;">
+  <div class="msg-header">
+    <button class="back-button" id="btn-retour-liste">←</button>
+    <span class="conversation-name" id="conversation-name"></span>
+  </div>
+  <div class="conversation-messages" id="conversation-messages">
+    <!-- Bulles de messages remplies par JS -->
+  </div>
+  <div class="conversation-input">
+    <input type="hidden" id="receiver-id" value="">
+    <input type="text" placeholder="Écrire un message..." id="message-input">
+    <button id="send-button">Envoyer</button>
+  </div>
+</div>
+
+<script src="messages.js"></script>
+</body>
+</html>
