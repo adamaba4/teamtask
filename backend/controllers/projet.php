@@ -33,8 +33,24 @@ switch ($action) {
             }
             break;
 
+        case 'choisir_projet':
+            $projet_id = $_POST['projet_id'];
+            $_SESSION['projet_id'] = $projet_id;
+            echo json_encode(["success" => true]);
+            break;
 
-        //-------------------------------------------------------//         
+
+        case 'add_member':
+            $email = trim($_POST['email']);
+            $projet_id = $_SESSION['projet_id'];
+            $result = $projet->addMember($projet_id, $email);
+            if ($result) {
+                echo json_encode(["success" => true, "message" => "Membre ajouté !"]);
+            } else {
+                echo json_encode(["success" => false, "message" => "Utilisateur non trouvé. Il doit d'abord s'inscrire."]);
+            }
+            break;
+        //-------------------------------------------------------//
         //RECUPERER TOUS LES PROEJTS DE L'USER 
         //-------------------------------------------------------//
         case 'get_projects_of_user':
@@ -46,7 +62,7 @@ switch ($action) {
         //Récuperer les membres d'un projets avec leur rôle
         //-------------------------------------------------------//
         case 'get_members_of_project':
-            $projet_id = isset($_POST['projet_id']) ? (int)$_POST['projet_id'] : null;
+            $projet_id = isset($_SESSION['projet_id']) ? (int)$_SESSION['projet_id'] : null;
             $result = $projet->getMembersByProject($projet_id);
             echo json_encode(["success" => true, "members" => $result]);
             break;
@@ -55,7 +71,7 @@ switch ($action) {
         //CREER UNE REUNION
         //-------------------------------------------------------//
         case 'create_reunion' : 
-            $projet_id =isset($_POST['projet_id']) ? (int)$_POST['projet_id'] : null;
+            $projet_id =isset($_SESSION['projet_id']) ? (int)$_SESSION['projet_id'] : null;
             $titre = isset($_POST['titre']) ? $_POST['titre'] : null;
             $description = isset($_POST['description']) ? $_POST['description'] : null;
             $date = isset($_POST['date_reunion']) ? $_POST['date_reunion'] : null;
@@ -76,13 +92,13 @@ switch ($action) {
         //Compte du nombre de meeting/reunions
         //-------------------------------------------------------/
         case 'count_meetings':
-            $projet_id = isset($_POST['projet_id']) ? (int)$_POST['projet_id'] : null;
+            $projet_id = isset($_SESSION['projet_id']) ? (int)$_SESSION['projet_id'] : null;
             $result = $projet->countMeetings($projet_id);
             echo json_encode(["success" => true, "count" => $result]);
             break;
 
         case 'get_meetings_by_month':
-            $projet_id = isset($_POST['projet_id']) ? (int)$_POST['projet_id'] : null;
+            $projet_id = isset($_SESSION['projet_id']) ? (int)$_SESSION['projet_id'] : null;
             $mois = isset($_POST['mois']) ? (int)$_POST['mois'] : null;
             $annee = isset($_POST['annee']) ? (int)$_POST['annee'] : null;
             $result = $projet->getMeetingsByMonth($projet_id, $mois, $annee);

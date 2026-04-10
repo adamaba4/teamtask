@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mes projets</title>
+    <link rel="stylesheet" href="projet.css">
+</head>
+<body>
+<div class="user_name">
+    <div>
+        <h1>Bienvenue, <span id="user-prenom"></span> !</h1>
+        <p>Sur quel projet veux-tu travailler aujourd'hui ?</p>
+    </div>
+    <div class="user-actions">
+        <div class="user-avatar" id="user-avatar"></div>
+        <button id="btn-deconnexion" class="btn-deconnexion">Déconnexion</button>
+    </div>
+</div>
+
+<div class="liste_projet" id="liste_projet">
+ <!-- on remplit par JS les projets -->
+</div>
+
+<div class="btn_ajout_projet">
+    <button id="btn_ajout_projet">Ajouter un projet</button>
+</div>
+
+<!--le modal pour creer un projet -->
+
+<div class="modal-overlay" id="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>Nouveau Projet</h3>
+            <button class="modal-close" id="modal-close">&times;</button>
+        </div>
+
+
+        <form id="new-projet-form">
+            <label>Nom du projet</label>
+            <input type="text" name="nom" placeholder="EX: Projet Teamtask" required>
+
+            <label>Description</label>
+            <textarea name="description" placeholder="Description du projet... " rows = "4"></textarea>
+
+            <label> Date début</label>
+            <input type="date" name="start_date" required>
+
+
+            <label> Date fin</label>
+            <input type="date" name="end_date" required>
+
+
+            <div id="projet-msg" class="projet-msg"></div>
+            <button type="submit" class="btn-primary btn-full">Créer le projet</button>
+
+        </form>
+    </div>
+</div>
+
+<script src="projet.js"></script>
+</body>
+</html>

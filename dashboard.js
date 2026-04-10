@@ -1,5 +1,4 @@
 let user_id = null;
-let projet_id = 1;
 let moisCourrant = new Date().getMonth() ;
 let anneeCourrante = new Date().getFullYear();
 let jourSelectionne = null;
@@ -11,7 +10,7 @@ const COULEURS_AVATAR = ["#6c5ce7", "#00b894", "#fd79a8", "#fdcb6e", "#e17055", 
 document.addEventListener("DOMContentLoaded", async () => {
     try {
         await verifierConnexion();
-        /*await recupererProjet();*/
+
     } catch (error) {
         console.error("Erreur :", error);
     }
@@ -65,7 +64,7 @@ async function recupererProjet() {
     });
     const result = await response.json();
     if (result.success) {
-        projet_id = result.id;
+        //projet_id = result.id;
         document.getElementById("name-project").textContent = result.nom;
     }
 }
@@ -74,7 +73,7 @@ async function recupererProjet() {
 async function chargerMembres() {
     let data = new FormData();
     data.append("action", "get_members_of_project");
-    data.append("projet_id", projet_id);
+    //data.append("projet_id", projet_id);
 
     const response = await fetch("backend/controllers/projet.php", {
         method: "POST",
@@ -106,7 +105,7 @@ async function chargerMembres() {
 async function chargerCartes() {
     let data = new FormData();
     data.append("action", "count_tasks");
-    data.append("projet_id", projet_id);
+    //data.append("projet_id", projet_id);
     data.append("user_id", user_id);
 
     const response = await fetch("backend/controllers/taches.php", {
@@ -122,7 +121,7 @@ async function chargerCartes() {
 
     let data2 = new FormData();
     data2.append("action", "count_meetings");
-    data2.append("projet_id", projet_id);
+    //data2.append("projet_id", projet_id);
 
     const response2 = await fetch("backend/controllers/projet.php", {
         method: "POST",
@@ -162,7 +161,7 @@ function nouvelleTache() {
         try {
             let data = new FormData(form);
             data.append("action", "create_task");
-            data.append("projet_id", projet_id);
+            //data.append("projet_id", projet_id);
             data.append("user_id", user_id);
 
             const response = await fetch("backend/controllers/taches.php", {
@@ -259,7 +258,7 @@ function afficherCalendrier() {
 async function chargerDonneesMois() {
     let data1 = new FormData();
     data1.append("action", "get_tasks_by_month");
-    data1.append("projet_id", projet_id);
+    //data1.append("projet_id", projet_id);
     data1.append("mois", moisCourrant + 1);
     data1.append("annee", anneeCourrante);
 
@@ -276,7 +275,7 @@ async function chargerDonneesMois() {
 
     let data2 = new FormData();
     data2.append("action", "get_meetings_by_month");
-    data2.append("projet_id", projet_id);
+    //data2.append("projet_id", projet_id);
     data2.append("mois", moisCourrant  +1);
     data2.append("annee", anneeCourrante);
 
@@ -372,7 +371,7 @@ function navigationCalendrier() {
 async function chargerDeadlines() {
     const data = new FormData();
     data.append("action", "get_deadlines");
-    data.append("projet_id", projet_id);
+    //data.append("projet_id", projet_id);
     data.append("user_id", user_id);
     const response = await fetch("backend/controllers/taches.php", {
         method: "POST",

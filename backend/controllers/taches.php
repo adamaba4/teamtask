@@ -6,13 +6,14 @@ require_once '../models/Task.php';
 $tache = new Task($db_conn);
 $action = isset($_POST['action']) ? $_POST['action'] : '';
 $user_id = $_SESSION['id_user'];
+$projet_id = isset($_SESSION['projet_id']) ? (int)$_SESSION['projet_id'] : null;
 
 switch ($action)
 {
     //-------------------------------------------------------------------------------------------------------------
     // Récupérer toutes les tâche d'un utilisateur
     case 'my_tasks':
-        $projet_id = (int)$_POST['projet_id'];
+
         $result = $tache->getTasksByUser($user_id, $projet_id);
         echo json_encode(["success" => true, "taches" => $result]); //on renvoie le tableau des taches
 
@@ -31,7 +32,7 @@ switch ($action)
         $category    = !empty($_POST['category'])    ? $_POST['category']    : null;
         $description = !empty($_POST['description']) ? $_POST['description'] : null;
         $color       = !empty($_POST['color'])       ? $_POST['color']       : null;
-        $projet_id = $_POST['projet_id'];
+
         $priority    = $_POST['priority'];
 
          // Vérification des dates
@@ -57,7 +58,6 @@ switch ($action)
      //-------------------------------------------------------------------------------------------------------------
     //NOMBRE DE TACHES SELON LE STATUT
     case 'count_tasks':
-        $projet_id = isset($_POST['projet_id']) ? (int)$_POST['projet_id'] : null;
         $counts = $tache->countTasksByStatus($user_id, $projet_id);
         echo json_encode(array_merge(['success' => true], $counts)); //pour avoir un seul tableau
         break;       
@@ -65,7 +65,6 @@ switch ($action)
      //-------------------------------------------------------------------------------------------------------------
     //La liste complete des taches d'un projet avec la personne qui s'en occupe
     case 'get_tasks':
-        $projet_id = isset($_POST['projet_id']) ? (int)$_POST['projet_id'] : null;
         if (!$projet_id) {
             echo json_encode(["success" => false, "message" => "projet manquant"]);
             break;
@@ -78,7 +77,6 @@ switch ($action)
      //-------------------------------------------------------------------------------------------------------------
     //La liste des taches de l'user qui se finit dans 3 jours
     case 'get_deadlines':
-        $projet_id = isset($_POST['projet_id']) ? (int)$_POST['projet_id'] : null;
         $deadlines = $tache->getUpcomingDeadlines($projet_id, $user_id);
         echo json_encode(["success" => true, "deadlines" => $deadlines]);
         break;
@@ -104,7 +102,6 @@ switch ($action)
         break;
 
     case 'get_tasks_by_month':
-        $projet_id = isset($_POST['projet_id']) ? (int)$_POST['projet_id'] : null;
         $mois = isset($_POST['mois']) ? (int)$_POST['mois'] : null;
         $annee = isset($_POST['annee']) ? (int)$_POST['annee'] : null;
         $result = $tache->getTaskByMonth($projet_id, $user_id, $mois, $annee);
