@@ -80,10 +80,12 @@ require_once 'db.php';
     "CREATE TABLE  forum (
         id          SERIAL PRIMARY KEY,
         user_id     INT NOT NULL,
+        projet_id   INT NOT NULL,
         content     TEXT NOT NULL,
         likes       INT DEFAULT 0,
         create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id)
+        FOREIGN KEY (projet_id) REFERENCES projet(id) ON DELETE CASCADE
     )",
 
     "CREATE TABLE  comments_forum (

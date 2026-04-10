@@ -1,0 +1,226 @@
+<!-- TP programmation Web : Nasifa Zabalmougamadou-->
+<?php
+session_start();?>
+
+?>
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Tâches</title>
+    <link rel="stylesheet" href="taches.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+     <!-- le sidebar à gauche -->
+      <aside class="sidebar">
+          <div class="sidebar-header">
+              <h2 class="logo"> TeamTask</h2>
+              <p class="name-project" id="name-project">  <!-- rempli dynamiquement par js--></p>
+          </div>
+          <nav class="sidebar-nav">
+              <a href="dashboard.html" class="nav-item"><span class="nav-icon">◧</span> Tableau de bord
+              </a>
+
+              <a href="taches.php" class="nav-item active"> <span class="nav-icon">☑</span> Tâches
+              </a>
+
+              <a href="#" class="nav-item"> <span class="nav-icon">◈</span> Messagerie
+              </a>
+
+              <a href="forum.html" class="nav-item"><span class="nav-icon">◉</span> Forum
+              </a>
+          </nav>
+
+          <div class="sidebar-members">
+              <p class="members-title">MEMBRES</p>
+              <div id="members-list">
+
+              </div>
+          </div>
+
+          <div class="sidebar-user">
+              <div class="user-avatar" id="user-avatar"></div>
+              <div class="user-info">
+                  <span class =user-name id="user-name"></span>
+                  <a href="#" id="btn-deconnexion" class="user-logout">Déconnexion</a>
+              </div>
+          </div>
+
+      </aside>
+      <!-- le contenu principal à droite-->
+
+      <main class="main-content">
+            <!--en tête-->
+          <div class="header">
+              <div>
+                  <h1>Tâches</h1>
+                  <p class="header-sub" id="header-welcome"> </p>
+              </div>
+              <button class="btn-primary" id="btn-new-task">+ Nouvelle tâche</button>
+          </div>
+
+
+
+            <!-- les cartes statistiques -->
+
+          <div class="grille-stat">
+
+              <div class="carte">
+                  <div class="carte-stat">
+                      <span class="icon">⚠️</span>
+                      <span class="compteur" id="compteur-late">0</span>
+                  </div>
+                  <p class="label">En retard</p>
+              </div>
+
+              <div class="carte">
+                  <div class="carte-stat">
+                      <span class="icon">⏳</span>
+                      <span class="compteur" id="compteur-progress"> 0</span>
+                  </div>
+                  <p class="label">En cours</p>
+              </div>
+
+              <div class="carte">
+                  <div class="carte-stat">
+                      <span class="icon">✅</span>
+                      <span class="compteur" id="compteur-done"> 0</span>
+                  </div>
+                  <p class="label">Terminées</p>
+              </div>
+
+              <div class="carte">
+                  <div class="carte-stat">
+                  <span class="icon">📅</span>
+                  <span class="compteur" id="compteur-meetings">0</span>
+                  </div>
+                  <p class="label">Réunions ce mois</p>
+              </div>
+
+          </div>
+
+          <!-- CHOIX des projets , filtres -->
+    <div class="filtres">
+        <select class="filtre-select" id="select-projet" onchange="changerProjet()">
+            <option value="">Chargement des projets...</option>
+        </select>
+        <div class="filtre-tabs">
+            <button class="filtre-tab active" id="tab-mes" onclick="switchTab('mes',event)">Mes tâches</button>
+            <button class="filtre-tab" id="tab-toutes"onclick="switchTab('toutes',event)">Toutes</button>
+            <button class="filtre-tab" onclick="switchTab('perso', event)">🔒 Personnelles</button>
+        </div>
+        <select class="filtre-select" id="filtre-statut" onchange="filtrerStatut()" style="min-width:140px">
+            <option value="">Tous les statuts</option>
+            <option value="en_cours">En cours</option>
+            <option value="terminee">Terminées</option>
+            <option value="en_retard">En retard</option>
+        </select>
+    </div>
+
+           <!-- TABLEAU -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Tâche</th>
+                            <th>Assignée à</th>
+                            <th>Statut</th>
+                            <th>Priorité</th>
+                            <th>Deadline</th>
+                           
+                        </tr>
+                    </thead>
+                    <tbody id="tableau-taches">
+                        <tr><td colspan="7"><div class="loading">⏳ Veuillez choisir un projet.</div></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+             <!-- le modal/popup-->
+     <div class="modal-overlay" id="modal-overlay">
+         <div class="modal">
+             <div class="modal-header">
+                 <h3>Nouvelle tâche</h3>
+                 <button class="modal-close" id="modal-close">&times;</button>
+             </div>
+
+
+             <form id="new-task-form">
+                     <label>Nom de la tâche</label>
+                     <input type="text" name="nom" placeholder="EX: Créer la page forum" required>
+
+                     <label>Description</label>
+                     <textarea name="description" placeholder="Description de la tâche... " rows = "4"></textarea>
+
+
+                     <div class="form-row">
+                         <div class="form-group">
+                             <label> Date début</label>
+                             <input type="date" name="start_date">
+                         </div>
+
+                         <div class="form-group">
+                             <label> Date fin</label>
+                             <input type="date" name="end_date" required>
+                         </div>
+                     </div>
+
+
+                     <div class="form-row">
+                         <div class="form-group">
+                             <label>Catégorie</label>
+                             <select name="category">
+                                 <option value="Frontend">Frontend</option>
+                                 <option value="Backend">Backend</option>
+                                 <option value="Design">Design</option>
+                                 <option value="Autre">Autre</option>
+                             </select>
+                         </div>
+                         <div class="form-group">
+                             <label>Priorité</label>
+                             <select name="priority">
+                                 <option value="normale">Normale</option>
+                                 <option value="basse">Basse</option>
+                                 <option value="haute">Haute</option>
+                             </select>
+                         </div>
+                     </div>
+
+                     <div class="form-row">
+                         <div class="form-group">
+                             <label> Visibilité</label>
+                             <select name="is_public">
+                                 <option value="true">Public</option>
+                                 <option value="false">Privé</option>
+                             </select>
+
+                         </div>
+                         <div class="form-group">
+                             <label>Couleur</label>
+                             <input type="color" name="color" value="#3498db">
+                         </div>
+                     </div>
+                    <div id="task-msg" class="task-msg"></div>
+                    <button type="submit" class="btn-primary btn-full">Créer la tâche</button>
+
+             </form>
+         </div>
+     </div>
+</main>
+
+<script>
+    const user_id = <?php echo isset($_SESSION['id_user']) ? $_SESSION['id_user'] : 'null'; ?>;
+    console.log("ID utilisateur chargé :", user_id);
+
+</script>
+<script src="taches.js"></script>
+
+</body>
+
+</html>

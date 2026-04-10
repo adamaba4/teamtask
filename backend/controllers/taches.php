@@ -108,6 +108,12 @@ switch ($action)
         echo json_encode(["success" => true, "tasksByMonth" => $result]);
         break;
 
+    // Tâches privées de l'utilisateur connecté
+    case 'my_private_tasks':
+        $result = $tache->getPrivateTasks($user_id);
+        echo json_encode(["success" => true, "taches" => $result]);
+        break;
+
 }
 
 ?>
