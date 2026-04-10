@@ -84,7 +84,7 @@ require_once 'db.php';
         content     TEXT NOT NULL,
         likes       INT DEFAULT 0,
         create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES users(id)
+        FOREIGN KEY (user_id) REFERENCES users(id),
         FOREIGN KEY (projet_id) REFERENCES projet(id) ON DELETE CASCADE
     )",
 
@@ -111,8 +111,8 @@ require_once 'db.php';
         id SERIAL PRIMARY KEY,
         reunion_id INT NOT NULL,
         user_id INT NOT NULL,
-        foreign key (reunion_id) references reunion(id),
-        foreign key (user_id) references users(id)
+        FOREIGN KEY (reunion_id) REFERENCES reunion(id),
+        FOREIGN KEY (user_id) REFERENCES users(id)
 )"
 
  ];
