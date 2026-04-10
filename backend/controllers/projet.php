@@ -44,10 +44,15 @@ switch ($action) {
             $email = trim($_POST['email']);
             $projet_id = $_SESSION['projet_id'];
             $result = $projet->addMember($projet_id, $email);
-            if ($result) {
+
+            if ($result === "success") {
                 echo json_encode(["success" => true, "message" => "Membre ajouté !"]);
-            } else {
+            } else if ($result === "not_found") {
                 echo json_encode(["success" => false, "message" => "Utilisateur non trouvé. Il doit d'abord s'inscrire."]);
+            } else if ($result === "already_member") {
+                echo json_encode(["success" => false, "message" => "Cette personne est déjà membre du projet."]);
+            } else {
+                echo json_encode(["success" => false, "message" => "Erreur lors de l'ajout."]);
             }
             break;
         //-------------------------------------------------------//
@@ -104,6 +109,15 @@ switch ($action) {
             $result = $projet->getMeetingsByMonth($projet_id, $mois, $annee);
             echo json_encode(["success" => true, "meetingsByMonth" => $result]);
             break;
+
+        case 'get_project_current':
+            $projet_id = $_SESSION['projet_id'];
+            $result = $projet->getCurrentProjet($projet_id);
+            echo json_encode(["success" => true, "projet" => $result]);
+            break;
+
+
+
     }
 
 

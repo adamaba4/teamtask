@@ -109,13 +109,24 @@
                 "SELECT id FROM users WHERE email = $1", [$email]);
             $user = pg_fetch_assoc($result);
 
-            if (!$user) return false;
+            if (!$user) return "not_found";
+
+            $result1 = pg_query_params($this->db_conn,
+                "SELECT * FROM projet_membre WHERE projet_id = $1 AND user_id = $2", [$projet_id, $user['id']]);
+            $reponse = pg_fetch_assoc($result1);
+            if ($reponse) return "already_member";
 
             $insert = pg_query_params($this->db_conn,
                 "INSERT INTO projet_membre (projet_id, user_id, role) VALUES ($1, $2, 'membre')",
                 [$projet_id, $user['id']]);
 
-            return $insert;
+            return $insert ? "success" : "error";
+        }
+        public function getCurrentProjet($projet_id){
+            $result = pg_query_params($this->db_conn,
+                "SELECT * FROM projet WHERE id = $1", [$projet_id]);
+            return pg_fetch_assoc($result);
+
         }
 
     }
