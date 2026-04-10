@@ -106,7 +106,14 @@ require_once 'db.php';
         is_read     BOOLEAN DEFAULT FALSE,
         create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id)
-    )"
+    )",
+     "CREATE TABLE reunion_membre (
+        id SERIAL PRIMARY KEY,
+        reunion_id INT NOT NULL,
+        user_id INT NOT NULL,
+        foreign key (reunion_id) references reunion(id),
+        foreign key (user_id) references users(id)
+)"
 
  ];
  foreach ($queries as $query) {
