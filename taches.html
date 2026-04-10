@@ -1,4 +1,4 @@
-<!-- TP programmation Web : Nasifa Zabalmougamadou-->
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -22,20 +22,20 @@
               <a href="dashboard.html" class="nav-item"><span class="nav-icon">◧</span> Tableau de bord
               </a>
 
-              <a href="#" class="nav-item active"> <span class="nav-icon">☑</span> Tâches
+              <a href="taches.php" class="nav-item active"> <span class="nav-icon">☑</span> Tâches
               </a>
 
               <a href="#" class="nav-item"> <span class="nav-icon">◈</span> Messagerie
               </a>
 
-              <a href="#" class="nav-item"><span class="nav-icon">◉</span> Forum
+              <a href="forum.html" class="nav-item"><span class="nav-icon">◉</span> Forum
               </a>
           </nav>
 
           <div class="sidebar-members">
               <p class="members-title">MEMBRES</p>
               <div id="members-list">
-                  <!-- rempli dynamiquement par js -->
+
               </div>
           </div>
 
@@ -100,14 +100,13 @@
 
           </div>
 
-          <!-- CHOIX des projets , filtres -->
+          <!-- CHOIX des filtres -->
     <div class="filtres">
-        <select class="filtre-select" id="select-projet" onchange="changerProjet()">
-            <option value="">Chargement des projets...</option>
-        </select>
+        
         <div class="filtre-tabs">
             <button class="filtre-tab active" id="tab-mes" onclick="switchTab('mes',event)">Mes tâches</button>
             <button class="filtre-tab" id="tab-toutes"onclick="switchTab('toutes',event)">Toutes</button>
+            <button class="filtre-tab" onclick="switchTab('perso', event)">🔒 Personnelles</button>
         </div>
         <select class="filtre-select" id="filtre-statut" onchange="filtrerStatut()" style="min-width:140px">
             <option value="">Tous les statuts</option>
@@ -128,11 +127,11 @@
                             <th>Statut</th>
                             <th>Priorité</th>
                             <th>Deadline</th>
-                            <th>Action</th>
+                           
                         </tr>
                     </thead>
                     <tbody id="tableau-taches">
-                        <tr><td colspan="7"><div class="loading">⏳ Chargement des tâches...</div></td></tr>
+                        <tr><td colspan="7"><div class="loading">⏳ Veuillez choisir un projet.</div></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -208,6 +207,8 @@
          </div>
      </div>
 </main>
+
+
 <script src="taches.js"></script>
 
 </body>

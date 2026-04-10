@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Forum</title>
+    <link rel="stylesheet" href="forum.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+     <!-- le sidebar à gauche -->
+      <aside class="sidebar">
+          <div class="sidebar-header">
+              <h2 class="logo"> TeamTask</h2>
+              <p class="name-project" id="name-project">  <!-- rempli dynamiquement par js--></p>
+          </div>
+          <nav class="sidebar-nav">
+              <a href="dashboard.html" class="nav-item"><span class="nav-icon">◧</span> Tableau de bord
+              </a>
+
+              <a href="taches.php" class="nav-item"> <span class="nav-icon">☑</span> Tâches
+              </a>
+
+              <a href="#" class="nav-item"> <span class="nav-icon">◈</span> Messagerie
+              </a>
+
+              <a href="forum.php" class="nav-item active"><span class="nav-icon">◉</span> Forum
+              </a>
+          </nav>
+
+          <div class="sidebar-members">
+              <p class="members-title">MEMBRES</p>
+              <div id="members-list">
+  
+              </div>
+          </div>
+
+          <div class="sidebar-user">
+              <div class="user-avatar" id="user-avatar"></div>
+              <div class="user-info">
+                  <span class =user-name id="user-name"></span>
+                  <a href="#" id="btn-deconnexion" class="user-logout">Déconnexion</a>
+              </div>
+          </div>
+
+      </aside>
+      <!-- le contenu principal à droite-->
+
+    <main class="main-content">
+
+        <!--  liste des forums -->
+        <div id="vue-forums">
+            <div class="header">
+                <div>
+                    <h1>Forum</h1>
+                    <div class="header-sub" id="header-welcome">Chargement...</div>
+                </div>
+                <button class="btn-primary" onclick="ouvrirModalForum()">+ Créer un forum</button>
+            </div>
+            
+            <div class="forums-list" id="forums-list">
+                <div class="loading">Veuillez choisir un projet.</div>
+            </div>
+        </div>
+
+
+    <!--vue-->
+        <div id="vue-posts">
+            <div class="posts-header">
+                <button class="btn-back" onclick="retourForums()">← Retour</button>
+                <div>
+                    
+                    <h1 id="forum-titre-page">Forum</h1>
+                    <div class="header-sub" id="forum-desc-page"></div>
+                   
+                </div>
+
+                <button class="btn-primary" style="margin-left:auto" onclick="ouvrirModalPost()">+ Ajouter un commentaire</button>
+            </div>
+            <div id="posts-liste">
+                <div class="loading">Chargement des posts...</div>
+            </div>
+        </div>
+
+        <!-- MODAL : créer un forum -->
+        <div class="modal-overlay" id="modal-forum">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3>Créer un forum</h3>
+                    <button class="modal-close" onclick="fermerModal('modal-forum')">✕</button>
+                </div>
+                <form id="form-forum">
+                    <label>Nom du forum *</label>
+                    <input type="text" name="content" placeholder="Ex: Questions générales" required>
+                    <button type="submit" class="btn-primary" style="width:100%; margin-top:18px;">Créer</button>
+                    <p class="modal-msg" id="msg-forum"></p>
+                </form>
+            </div>
+            </div>
+
+            <!-- MODAL : créer un post -->
+        <div class="modal-overlay" id="modal-post">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3>Nouveau post</h3>
+                    <button class="modal-close" onclick="fermerModal('modal-post')">✕</button>
+                </div>
+                <form id="form-post">
+                    <label>Contenu *</label>
+                    <textarea name="content" rows="5" placeholder="Écris ton message..." required></textarea>
+                    <button type="submit" class="btn-primary" style="width:100%; margin-top:18px;">Publier</button>
+                    <p class="modal-msg" id="msg-post"></p>
+                </form>
+            </div>
+</div>
+</div>
+
+</main>
+
+
+          </main>
+
+
+<script src="forum.js"></script>
+
+</body>
+
+</html>
