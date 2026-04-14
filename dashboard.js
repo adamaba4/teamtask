@@ -443,8 +443,6 @@ async function chargerDeadlines() {
 
         for (let i = 0; i < result.deadlines.length; i++) {
             let tache = result.deadlines[i];
-            if (!tache.is_public)
-                continue;
             let deadline = new Date(tache.end_date);
             let diff = Math.ceil((deadline - aujourdhui) / (1000 * 60 * 60 * 24));
             let joursTexte = "";

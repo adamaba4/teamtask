@@ -86,7 +86,8 @@
                     INNER JOIN projet_membre pm ON pm.projet_id = t.projet_id
                     WHERE pm.user_id = $1
                     AND t.end_date BETWEEN CURRENT_DATE AND CURRENT_DATE + INTERVAL '3 days'
-                    AND t.status != 'terminee'";
+                    AND t.status != 'terminee'
+                    AND (t.is_public = TRUE OR t.user_id = $1)";
     
             if ($projet_id) {
                 $sql .= " AND t.projet_id = $2";
