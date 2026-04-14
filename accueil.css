@@ -147,16 +147,16 @@ h1{
     margin:0;
 }
 
-/* 3. Style du bloc de l'image à droite */
+
 .droite {
     flex: 1; /* Prend l'autre moitié de l'espace disponible */
     display: flex;
-    justify-content: center; /* Centre l'image à l'intérieur de son bloc */
+    justify-content: center;
 }
 
-/* 4. S'assurer que l'image ne dépasse pas */
+
 .droite img {
-    max-width: 650px; /* L'image s'adapte à la largeur de son bloc */
+    max-width: 650px;
     height: auto;
     width:100%;
     filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));

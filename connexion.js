@@ -37,7 +37,7 @@ window.addEventListener("load", () => {
             .then(result => {
                 if (result.success) {
                     setTimeout(() => {
-                        window.location.href = "projet.html"; // Change vers ta page d'accueil
+                        window.location.href = "projet.html"; 
                     }, 1500);
                 } else {
                     msgerror.textContent=result.message;

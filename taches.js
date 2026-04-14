@@ -171,7 +171,6 @@ async function changerProjet() {
             result.taches.forEach(tache => {
                 const tr = document.createElement('tr');
                 
-                // Ici on utilise tache.prenom et tache.nom que ton SQL récupère !
                 const assigneA = (tache.prenom && tache.username) 
                                 ? `${tache.prenom} ${tache.username}` 
                                 : "Non assigné";
@@ -204,7 +203,7 @@ async function changerProjet() {
 function filtrerStatut() {
     const statutSelectionne = document.getElementById('filtre-statut').value;
     
-    // 2. Récupérer toutes les lignes de ton tableau
+    //  Récupérer toutes les lignes 
     const lignes = document.querySelectorAll('#tableau-taches tr');
 
     lignes.forEach(ligne => {
@@ -215,7 +214,7 @@ function filtrerStatut() {
 
         const statutLigne = stat.textContent.trim();
 
-        // 3. Logique d'affichage
+
         //si le tex de la ligne est egal au filtre ou si c'est "tous"
         if (statutSelectionne === "" || statutLigne === statutSelectionne) {
             
