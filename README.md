@@ -32,3 +32,10 @@ L’objectif de TeamTask est de faciliter le travail collaboratif en offrant :
 3. **Suivi et statistiques**  
    - Compteur de tâches pour visualiser la charge de travail.  
    - Vue globale du calendrier pour planifier le travail du groupe.
+
+
+
+Instructions pour lancer l’application :
+- Créer les tables dans une base de données : php backend/config/tables,php
+- Lancer dans le terminal :  php -S localhost:8050 (ou autre port)
+- Lancer dans la page dans le navigateur : http://localhost:8050/accueil.html
