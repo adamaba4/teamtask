@@ -68,29 +68,43 @@
         //-------------------------------------------------------//
         //  Ajoute une réunion
         //-------------------------------------------------------//
-        public function create_meeting($projet_id, $user_id, $titre, $description, $date_reunion, $lieu)
-        {
+        public function create_meeting($projet_id, $user_id, $titre, $description, $date_reunion, $lieu, $participants) {
             $sql = "INSERT INTO reunion (projet_id, user_id, titre, description, date_reunion, lieu) 
-                    VALUES ($1, $2, $3, $4, $5, $6)";
+            VALUES ($1, $2, $3, $4, $5, $6) RETURNING id";
 
             $result = pg_query_params($this->db_conn, $sql, [
                 $projet_id, $user_id, $titre, $description, $date_reunion, $lieu]);
-            return $result ? true : false;
+
+            if ($result) {
+                $row = pg_fetch_assoc($result);
+                $reunion_id = $row['id'];
+
+                // Ajouter chaque participant dans reunion_membre
+                foreach ($participants as $participant_id) {
+                    pg_query_params($this->db_conn,
+                        "INSERT INTO reunion_membre (reunion_id, user_id) VALUES ($1, $2)",
+                        [$reunion_id, $participant_id]);
+                }
+                return true;
+            }
+            return false;
         }
         //-------------------------------------------------------//
         //    //Nombre de réunions associé au projet du mois en cours
         //-------------------------------------------------------//
-        public function countMeetings($projet_id)
-        {
-            // On compte le nombre de lignes qui correspondent à l'ID du projet
+        public function countMeetings($projet_id, $user_id) {
             $result = pg_query_params($this->db_conn,
-                "SELECT COUNT(*) as total FROM reunion WHERE projet_id = $1
-                AND EXTRACT(MONTH FROM date_reunion) = EXTRACT(MONTH FROM CURRENT_DATE)
-                AND EXTRACT(YEAR  FROM date_reunion) = EXTRACT(YEAR  FROM CURRENT_DATE)", //pour comparer la date 1 mois
-                [$projet_id]);
+                "SELECT COUNT(*) as total FROM reunion r
+         JOIN reunion_membre rm ON rm.reunion_id = r.id
+         WHERE r.projet_id = $1
+         AND rm.user_id = $2
+         AND EXTRACT(MONTH FROM r.date_reunion) = EXTRACT(MONTH FROM CURRENT_DATE)
+         AND EXTRACT(YEAR FROM r.date_reunion) = EXTRACT(YEAR FROM CURRENT_DATE)",
+                [$projet_id, $user_id]);
             $row = pg_fetch_assoc($result);
-            return $row ? (int)$row['total'] : 0; //0 si ya pas de reunions             
+            return $row ? (int)$row['total'] : 0;
         }
+        
 
         public function getMeetingsByMonth($projet_id, $mois, $annee)
         {

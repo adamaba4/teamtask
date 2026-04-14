@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
+<button class="menu-toggle" id="menu-toggle">☰</button>
       <!-- le sidebar à gauche -->
       <aside class="sidebar">
           <div class="sidebar-header">
@@ -55,8 +56,11 @@
                   <h1>Tableau de bord</h1>
                   <p class="header-sub" id="header-welcome"> </p>
               </div>
-              <button class="btn-primary" id="btn-new-task">+ Nouvelle tâche</button>
-              <button id="btn-new-reunion">+ Réunion</button>
+              <div class="header-buttons">
+                  <button class="btn-primary" id="btn-new-task">+ Nouvelle tâche</button>
+                  <button class="btn-primary" id="btn-new-reunion">+ Réunion</button>
+              </div>
+
           </div>
 
 
@@ -251,7 +255,7 @@
 
               <form id="form-add-reunion">
                   <label> Titre</label>
-                  <input type="text" name="titre" placeholder="je ne sais pas" required>
+                  <input type="text" name="titre" placeholder="réunion ..." required>
                   <label>Description</label>
                   <textarea name="description" placeholder="Description du réunion... " rows = "4"></textarea>
                   <label>Date</label>

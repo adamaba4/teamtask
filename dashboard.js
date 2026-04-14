@@ -20,7 +20,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     chargerCartes();
     chargerDeadlines();
     nouvelleTache();
-
+    organiserReunion()
+    setupMenuMobile()
     chargerDonneesMois();
     navigationCalendrier();
     deconnexion();
@@ -75,7 +76,7 @@ async function chargerMembres() {
     let estChefProjet = false;
     let data = new FormData();
     data.append("action", "get_members_of_project");
-    //data.append("projet_id", projet_id);
+
 
     const response = await fetch("backend/controllers/projet.php", {
         method: "POST",
@@ -88,7 +89,8 @@ async function chargerMembres() {
 
         for (let i = 0; i < result.members.length; i++) {
             let membre = result.members[i];
-            if ( membre.role === "chef_de_projet")
+            console.log("membre:", membre.id, "role:", membre.role, "user_id:", user_id);
+            if ( membre.id === user_id && membre.role === "chef_de_projet")
             {
                 estChefProjet = true;
             }
@@ -110,6 +112,9 @@ async function chargerMembres() {
     } else {
         document.getElementById("btn-add-membre").style.display = "none";
     }
+
+
+
 }
 
 // Charger les cartes statistiques
@@ -144,7 +149,88 @@ async function chargerCartes() {
         document.getElementById("compteur-meetings").textContent = result2.count;
     }
 }
+async function organiserReunion() {
+    const overlay = document.getElementById("modal-reunion-overlay");
+    const modalClose = document.getElementById("modal-reunion-close");
+    const bntOrganiserReunion = document.getElementById("btn-new-reunion");
+    const form = document.getElementById("form-add-reunion");
+    const msgError = document.getElementById("reunion-msg");
+    const listeMembresId = document.getElementById("reunion-membres-list");
+    bntOrganiserReunion.addEventListener("click", async () => {
+        overlay.classList.add("show");
+        let data = new FormData();
+        data.append("action", "get_members_of_project");
 
+
+        const response = await fetch("backend/controllers/projet.php", {
+            method: "POST",
+            body: data
+        });
+        const result = await response.json();
+        if(result.success)
+        {
+            listeMembresId.innerHTML = "";
+            if(result.members.length === 0){
+                listeMembresId.innerHTML = "<p>Aucun membre dans le projet</p>";
+            }
+            else {
+                for (let i = 0; i < result.members.length; i++) {
+                    let membre = result.members[i]
+                    listeMembresId.innerHTML += `
+                    <label>
+                    <input type="checkbox" name="participants[]" value=${membre.id}> ${membre.prenom} ${membre.nom}
+                    </label>
+                    `;
+
+
+                }
+            }
+
+        }
+
+    });
+    modalClose.addEventListener("click", () => {
+        overlay.classList.remove("show");
+    });
+    overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) {
+            overlay.classList.remove("show");
+        }
+    })
+
+    form.addEventListener("submit", async (e )=>{
+        e.preventDefault();
+        try {
+            let data = new FormData(form)
+            data.append("action", "create_reunion")
+            const response = await fetch("backend/controllers/projet.php", {
+                method: "POST",
+                body: data
+            })
+            const result = await response.json();
+            if(result.success)
+            {
+                msgError.textContent = result.message;
+                msgError.className = "task-msg success";
+                setTimeout(() => {
+                    form.reset();
+                    overlay.classList.remove("show");
+                    msgError.textContent = "";
+                }, 1000);
+            }
+            else {
+                msgError.textContent = result.message;
+                msgError.className = "task-msg error";
+            }
+        }
+        catch (error) {
+            msgError.textContent = "Erreur de connexion au serveur.";
+            msgError.className = "task-msg error";
+        }
+        });
+
+
+}
 
 function nouvelleTache() {
     const overlay = document.getElementById("modal-overlay");
@@ -172,23 +258,22 @@ function nouvelleTache() {
         try {
             let data = new FormData(form);
             data.append("action", "create_task");
-            //data.append("projet_id", projet_id);
-            data.append("user_id", user_id);
 
             const response = await fetch("backend/controllers/taches.php", {
                 method: "POST",
                 body: data
             });
-
             const result = await response.json();
             if (result.success) {
-                msgError.textContent = "Tâche créée";
+                
+                msgError.textContent = "tâche créée !";
                 msgError.className = "task-msg success";
                 setTimeout(() => {
                     form.reset();
                     overlay.classList.remove("show");
                     msgError.textContent = "";
                     chargerCartes();
+                    chargerDonneesMois();
                 }, 1000);
             } else {
                 msgError.textContent = result.message;
@@ -458,4 +543,13 @@ async function chargerDeadlines() {
         }
     }
 }
+function setupMenuMobile() {
+    const toggle = document.getElementById("menu-toggle");
+    const sidebar = document.querySelector(".sidebar");
 
+    if (toggle) {
+        toggle.addEventListener("click", () => {
+            sidebar.classList.toggle("open");
+        });
+    }
+}

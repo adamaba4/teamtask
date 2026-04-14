@@ -75,33 +75,32 @@ switch ($action) {
         //-------------------------------------------------------//
         //CREER UNE REUNION
         //-------------------------------------------------------//
-        case 'create_reunion' : 
-            $projet_id =isset($_SESSION['projet_id']) ? (int)$_SESSION['projet_id'] : null;
+
+        case 'create_reunion':
+            $projet_id = $_SESSION['projet_id'];
             $titre = isset($_POST['titre']) ? $_POST['titre'] : null;
             $description = isset($_POST['description']) ? $_POST['description'] : null;
             $date = isset($_POST['date_reunion']) ? $_POST['date_reunion'] : null;
             $lieu = isset($_POST['lieu']) ? $_POST['lieu'] : null;
+            $participants = isset($_POST['participants']) ? $_POST['participants'] : [];
 
-            $result = $projet->create_meeting($projet_id, $user_id, $titre, $description, $date, $lieu);
+            $result = $projet->create_meeting($projet_id, $user_id, $titre, $description, $date, $lieu, $participants);
             if ($result) {
-                echo json_encode(["success" => true, "message" => "Réunion ajoutée avec succès"]);
+                echo json_encode(["success" => true, "message" => "Réunion créée avec succès"]);
             } else {
-                    echo json_encode([
-                        "success" => false, "message" => "Erreur lors de la création"]);
-
-                }
-        
+                echo json_encode(["success" => false, "message" => "Erreur lors de la création"]);
+            }
             break;
 
         //-------------------------------------------------------//
         //Compte du nombre de meeting/reunions
         //-------------------------------------------------------/
+
         case 'count_meetings':
-            $projet_id = isset($_SESSION['projet_id']) ? (int)$_SESSION['projet_id'] : null;
-            $result = $projet->countMeetings($projet_id);
+            $projet_id = $_SESSION['projet_id'];
+            $result = $projet->countMeetings($projet_id, $user_id);
             echo json_encode(["success" => true, "count" => $result]);
             break;
-
         case 'get_meetings_by_month':
             $projet_id = isset($_SESSION['projet_id']) ? (int)$_SESSION['projet_id'] : null;
             $mois = isset($_POST['mois']) ? (int)$_POST['mois'] : null;
