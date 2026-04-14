@@ -141,12 +141,12 @@
         //-------------------------------------------------------//
         // Tâches privées de l'utilisateur connecté
          //-------------------------------------------------------//
-        public function getPrivateTasks($user_id) {
+        public function getPrivateTasks($user_id,$projet_id) {
             $result = pg_query_params($this->db_conn,
                 "SELECT t.*, u.prenom, u.nom AS username FROM taches t LEFT JOIN users u ON u.id = t.user_id
-                WHERE user_id = $1 AND is_public = false
+                WHERE user_id = $1 AND t.projet_id=$2 AND is_public = false
                 ORDER BY end_date ASC NULLS LAST",
-                [$user_id]
+                [$user_id,$projet_id]
             );
             $tasks = [];
             while ($row = pg_fetch_assoc($result)) {

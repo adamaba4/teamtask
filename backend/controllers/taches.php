@@ -110,7 +110,7 @@ switch ($action)
 
     // Tâches privées de l'utilisateur connecté
     case 'my_private_tasks':
-        $result = $tache->getPrivateTasks($user_id);
+        $result = $tache->getPrivateTasks($user_id,$projet_id);
         echo json_encode(["success" => true, "taches" => $result]);
         break;
 

@@ -27,6 +27,24 @@ async function verifierConnexion() {
     }
 }
 
+// Récupérer le projet
+async function recupererProjet() {
+    let data = new FormData();
+    data.append("action", "get_project_current");
+
+    const response = await fetch("backend/controllers/projet.php", {
+        method: "POST",
+        body: data
+    });
+    const result = await response.json();
+    if (result.success) {
+
+        document.getElementById("name-project").textContent = result.projet.nom;
+    }
+}
+
+
+
 // Charger les cartes statistiques
 async function chargerCartes() {
     let data = new FormData();
@@ -126,9 +144,6 @@ async function changerProjet() {
     const tableBody = document.getElementById('tableau-taches');
 
 
-
-
-
     let data = new FormData();
     // On choisit l'action selon le bouton cliqué
     if (modeAffichage === 'mes') {
@@ -157,7 +172,9 @@ async function changerProjet() {
                 const tr = document.createElement('tr');
                 
                 // Ici on utilise tache.prenom et tache.nom que ton SQL récupère !
-                const assigneA = tache.username ? ` ${tache.prenom} ${tache.username}` : "Non assigné";
+                const assigneA = (tache.prenom && tache.username) 
+                                ? `${tache.prenom} ${tache.username}` 
+                                : "Non assigné";
 
                 tr.innerHTML = `
                       <td>
@@ -256,8 +273,7 @@ function nouvelleTache() {
         try {
             let data = new FormData(form);
             data.append("action", "create_task");
-            //data.append("projet_id", projetId);
-            data.append("user_id", user_id);
+       
 
             const response = await fetch("backend/controllers/taches.php", {
                 method: "POST",
@@ -314,6 +330,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch (error) {
         console.error("Erreur :", error);
     }
+    recupererProjet();
     await changerProjet();
     chargerCartes();
     chargerMembres();
