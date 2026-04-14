@@ -126,9 +126,6 @@ async function changerProjet() {
     const tableBody = document.getElementById('tableau-taches');
 
 
-
-
-
     let data = new FormData();
     // On choisit l'action selon le bouton cliqué
     if (modeAffichage === 'mes') {
@@ -157,7 +154,9 @@ async function changerProjet() {
                 const tr = document.createElement('tr');
                 
                 // Ici on utilise tache.prenom et tache.nom que ton SQL récupère !
-                const assigneA = tache.username ? ` ${tache.prenom} ${tache.username}` : "Non assigné";
+                const assigneA = (tache.prenom && tache.username) 
+                                ? `${tache.prenom} ${tache.username}` 
+                                : "Non assigné";
 
                 tr.innerHTML = `
                       <td>
