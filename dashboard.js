@@ -88,12 +88,12 @@ async function chargerMembres() {
 
         for (let i = 0; i < result.members.length; i++) {
             let membre = result.members[i];
-            if (membre.id === user_id && membre.role === "chef_de_projet")
+            if ( membre.role === "chef_de_projet")
             {
                 estChefProjet = true;
             }
-            else
-            {   couleur = COULEURS_AVATAR[i % COULEURS_AVATAR.length];
+
+            couleur = COULEURS_AVATAR[i % COULEURS_AVATAR.length];
 
             container.innerHTML += `
             <div class="member-row"> 
@@ -102,7 +102,7 @@ async function chargerMembres() {
                 </div>
                 <span class="member-name">${membre.prenom} ${membre.nom}</span>
             </div>`;}
-        }
+
     }
 
     if (estChefProjet) {

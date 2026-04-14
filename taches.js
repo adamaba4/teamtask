@@ -256,7 +256,7 @@ function nouvelleTache() {
         try {
             let data = new FormData(form);
             data.append("action", "create_task");
-            data.append("projet_id", projetId);
+            //data.append("projet_id", projetId);
             data.append("user_id", user_id);
 
             const response = await fetch("backend/controllers/taches.php", {
