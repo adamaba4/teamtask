@@ -27,6 +27,24 @@ async function verifierConnexion() {
     }
 }
 
+// Récupérer le projet
+async function recupererProjet() {
+    let data = new FormData();
+    data.append("action", "get_project_current");
+
+    const response = await fetch("backend/controllers/projet.php", {
+        method: "POST",
+        body: data
+    });
+    const result = await response.json();
+    if (result.success) {
+
+        document.getElementById("name-project").textContent = result.projet.nom;
+    }
+}
+
+
+
 // Charger les cartes statistiques
 async function chargerCartes() {
     let data = new FormData();
@@ -312,6 +330,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch (error) {
         console.error("Erreur :", error);
     }
+    recupererProjet();
     await changerProjet();
     chargerCartes();
     chargerMembres();
