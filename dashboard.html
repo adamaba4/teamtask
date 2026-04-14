@@ -56,6 +56,7 @@
                   <p class="header-sub" id="header-welcome"> </p>
               </div>
               <button class="btn-primary" id="btn-new-task">+ Nouvelle tâche</button>
+              <button id="btn-new-reunion">+ Réunion</button>
           </div>
 
 
@@ -235,6 +236,34 @@
                   <input type="email" name="email" placeholder="adama@mail.com" required>
                   <div id="membre-msg" class="task-msg"></div>
                   <button type="submit" class="btn-primary btn-full">Ajouter au projet</button>
+              </form>
+          </div>
+      </div>
+
+      <!-- Modal pour organiser un reunion -->
+
+      <div class="modal-overlay" id="modal-reunion-overlay">
+          <div class="modal">
+              <div class="modal-header">
+                  <h3>Nouveau réunion</h3>
+                  <button class="modal-close" id="modal-reunion-close">&times;</button>
+              </div>
+
+              <form id="form-add-reunion">
+                  <label> Titre</label>
+                  <input type="text" name="titre" placeholder="je ne sais pas" required>
+                  <label>Description</label>
+                  <textarea name="description" placeholder="Description du réunion... " rows = "4"></textarea>
+                  <label>Date</label>
+                  <input type="datetime-local" name="date_reunion" required>
+                  <label>Lieu</label>
+                  <input type="text" name="lieu" placeholder="ex: Zoom, Salle B75 ..." required>
+                  <label>Membres</label>
+                  <div id="reunion-membres-list">
+                      <!-- Rempli par JS avec des checkboxes -->
+                  </div>
+                  <div id="reunion-msg" class="task-msg"></div>
+                  <button type="submit" class="btn-primary btn-full">Organiser réunion</button>
               </form>
           </div>
       </div>
