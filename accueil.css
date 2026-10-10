@@ -1,0 +1,165 @@
+body{
+    background: linear-gradient(90deg, #06232c, #0B3948, #1f5a6b);
+    overflow-x: hidden;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
+}
+
+.navbar{
+    display:flex;
+    justify-content:space-between;  
+    align-items:center; 
+background: linear-gradient(90deg, #977A62, #5a4638);
+    padding:15px 50px;
+    box-shadow: 0 4px 6px -2px rgba(0,0,0,0.2);
+}
+
+h2{
+    color:#D0CDD7;
+}
+
+.auth_buttons{
+    display:flex;
+    gap: 5px;
+}
+
+.btn_creation{
+    background: linear-gradient(90deg, #06232c, #0B3948, #1f5a6b);
+    display : inline-block;
+    color:#D0CDD7;
+    background-color:  #ACB0BD;
+    padding: 10px 25px;
+    border-radius:20px;
+    text-decoration:none;
+    transition: opacity 0.2s; /*quand l'opacity change, transition sur 0.2sec */
+    font-weight: 500;
+    font-size:1.2rem;
+}
+
+.btn_creation:hover{
+    opacity:0.9;
+}
+
+.btn_connexion{
+    
+    color : #D0CDD7;
+    padding: 10px 25px;
+    font-weight: 500;
+    font-size:1.2rem;
+}
+
+.btn_connexion:hover {
+    color: #D0CDD7; 
+    border-bottom-color: #D0CDD7;
+}
+
+ /* Centre tout le contenu principal */
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    padding: 20px 20px;
+}
+
+h1{
+    font-size: 55px;
+    font-weight: 750;
+    white-space: nowrap; /*pour que sa soit sur la meme ligne*/
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+    text-align: center;
+}
+
+.texte p {
+    font-size:20px;
+    margin-bottom:10px;
+}
+
+.fonctionnalites{
+    display:flex;
+    gap:20px;
+    
+    justify-content: center;
+    width:100%;
+
+}
+
+.texte{
+    color:#b7aca0;
+}
+
+.carre {
+    padding:70px 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px #0B3948;
+    transition: transform 0.3s ease;
+    flex: 1 1 300px;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center; 
+    justify-content: flex-start;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-height: 120px;
+   background: linear-gradient(90deg, #977A62, #5a4638);
+}
+.carre p {
+    color:#0B3948;
+    font-weight: bold;
+    font-size: 20px;
+    
+}
+.carre:hover {
+    transform: translateY(-4px); /* Petite animation au survol*/
+}
+
+.carre h3 {
+    margin-bottom: 10px;
+    font-size: 30px;
+    color:#D0CDD7;
+}
+
+.texte {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+    gap: 40px; 
+    padding: 60px 0; 
+    margin: 0 auto;
+}
+
+.gauche {
+    flex: 2; 
+    min-width: 600px;
+    display:flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.gauche p{
+    font-size:30px;
+    margin:0;
+}
+
+
+.droite {
+    flex: 1; /* Prend l'autre moitié de l'espace disponible */
+    display: flex;
+    justify-content: center;
+}
+
+
+.droite img {
+    max-width: 650px;
+    height: auto;
+    width:100%;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+
+}
+

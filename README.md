@@ -150,3 +150,4 @@ users ──────────┬── projet (créateur)
 ## 📄 Licence
 
 Projet universitaire — Université Sorbonne Paris Nord — 2026
+

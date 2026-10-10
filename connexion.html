@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Connexion</title>
+    <link rel="stylesheet" href="connexion.css">
+
+</head>
+
+<body>
+
+
+    <div class="login">
+        <div class="gauche">
+            <div class="logo">
+                <img src="images/connexion.jpg" alt="image_connexion">
+                <h1 class="app-name">TeamTask</h1>
+            </div>
+            <div>
+                <p class="text1">Gérez vos projets en équipe, simplement.</p>
+               <p class="text2">Connectez-vous pour découvrir vos nouveaux outils de collaboration.</p>
+            </div>
+        </div>
+
+        <div class="droite">
+            <form id="connexion">
+                <h2>CONNEXION</h2>
+               
+                <div class="mail">
+                    <label>Adresse mail : </label>
+                    <input type="email" id="email" name="email" placeholder="nom@email.com" required>
+                </div>
+
+                <div class="mdp">
+                    <label>Mot de passe : </label>
+                    <input type="password" id="password" name="password" placeholder="Entrez votre mot de passe"
+                        required>
+                </div>
+
+                <div id="msg-erreur" class="error-msg"></div>
+
+                <button type="submit">Se connecter</button>
+
+                <p class="footer-text">Nouveau sur TeamTask ? <a href="inscription.html">Créer un compte</a></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="connexion.js"></script>
+</body>
+
+</html>

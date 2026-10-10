@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Inscription</title>
+    <link rel="stylesheet" href="inscription.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <div class="content">
+
+        <div class="gauche">
+            <form id="inscription">
+                <input type="hidden" name="action" value="inscription">
+
+                <label>Nom : </label>
+                <input type="text" name="nom" placeholder="Nom" required>
+
+                <label>Prénom : </label>
+                <input type="text" name="prenom" placeholder="Prénom" required>
+
+
+                <label>Date de naissance :</label>
+                <input type="date" name="dob">
+
+                <label>Adresse mail : </label>
+                <input type="email" name="email" placeholder="Email" required>
+
+                <label>Mot de passe : </label>
+                <input type="password" name="password" placeholder="Mot de passe" required>
+
+
+                <div id="msg-erreur" class="error-msg"></div>
+                <button type="submit">Créer mon compte</button>
+            </form>
+        </div>
+
+        <div class="droite">
+            <h1>INSCRIPTION</h1>
+            <img src="images/inscription.png" alt="inscirption_icon">
+        </div>
+
+    </div>
+
+
+
+
+    <script src="inscription.js"></script>
+</body>
+
+</html>

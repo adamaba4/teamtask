@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Tableau de bord </title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+<button class="menu-toggle" id="menu-toggle">☰</button>
+      <!-- le sidebar à gauche -->
+      <aside class="sidebar">
+          <div class="sidebar-header">
+              <h2 class="logo"> TeamTask</h2>
+              <p class="name-project" id="name-project">  <!-- rempli dynamiquement par js--></p>
+          </div>
+          <nav class="sidebar-nav">
+              <a href="dashboard.html" class="nav-item active"><span class="nav-icon">◧</span> Tableau de bord
+              </a>
+
+              <a href="taches.html" class="nav-item"> <span class="nav-icon">☑</span> Tâches
+              </a>
+
+              <a href="messages.html" class="nav-item"> <span class="nav-icon">◈</span> Messagerie
+              </a>
+
+              <a href="forum.html" class="nav-item"><span class="nav-icon">◉</span> Forum
+              </a>
+              <a href="projet.html" class="nav-item"><span class="nav-icon">📁</span> Mes projets
+              </a>
+
+          </nav>
+
+          <div class="sidebar-members">
+              <p class="members-title">MEMBRES</p>
+              <div id="members-list">
+                  <!-- rempli dynamiquement par js -->
+              </div>
+          </div>
+          <button class="btn-add-membre" id="btn-add-membre" style="display: none">+ Ajouter des membres</button>
+
+          <div class="sidebar-user">
+              <div class="user-avatar" id="user-avatar"></div>
+              <div class="user-info">
+                  <span class =user-name id="user-name"></span>
+                  <a href="#" id="btn-deconnexion" class="user-logout">Déconnexion</a>
+              </div>
+          </div>
+
+      </aside>
+      <!-- le contenu principal à droite-->
+
+      <main class="main-content">
+            <!--en tête-->
+          <div class="header">
+              <div>
+                  <h1>Tableau de bord</h1>
+                  <p class="header-sub" id="header-welcome"> </p>
+              </div>
+              <div class="header-buttons">
+                  <button class="btn-primary" id="btn-new-task">+ Nouvelle tâche</button>
+                  <button class="btn-primary" id="btn-new-reunion">+ Réunion</button>
+              </div>
+
+          </div>
+
+
+
+            <!-- les cartes statistiques -->
+
+          <div class="grille-stat">
+
+              <div class="carte">
+                  <div class="carte-stat">
+                      <span class="icon">⚠️</span>
+                      <span class="compteur" id="compteur-late">0</span>
+                  </div>
+                  <p class="label">En retard</p>
+              </div>
+
+              <div class="carte">
+                  <div class="carte-stat">
+                      <span class="icon">⏳</span>
+                      <span class="compteur" id="compteur-progress"> 0</span>
+                  </div>
+                  <p class="label">En cours</p>
+              </div>
+
+              <div class="carte">
+                  <div class="carte-stat">
+                      <span class="icon">✅</span>
+                      <span class="compteur" id="compteur-done"> 0</span>
+                  </div>
+                  <p class="label">Terminées</p>
+              </div>
+
+              <div class="carte">
+                  <div class="carte-stat">
+                  <span class="icon">📅</span>
+                  <span class="compteur" id="compteur-meetings">0</span>
+                  </div>
+                  <p class="label">Réunions ce mois</p>
+              </div>
+
+          </div>
+          <!--Grille calendrier + panneau latéral-->
+
+          <div class="calendrier-panneau">
+              <!-- calendrier-->
+              <div class="calendrier">
+
+                  <div class="calendrier_header">
+                      <button id="calendrier_prev">‹</button>
+                      <h3 id="calendrier_titre"> Avril 2026</h3>
+                      <button id="calendrier_next">›</button>
+                  </div>
+
+                  <div class="calendrier_grille" >
+                      <div class="calendrier_jour_nom">Lun</div>
+                      <div class="calendrier_jour_nom">Mar</div>
+                      <div class="calendrier_jour_nom">Mer</div>
+                      <div class="calendrier_jour_nom">Jeu</div>
+                      <div class="calendrier_jour_nom">Ven</div>
+                      <div class="calendrier_jour_nom">Sam</div>
+                      <div class="calendrier_jour_nom">Dim</div>
+                  </div>
+
+                  <div class="calendrier_grille" id="calendrier_jours"></div>
+
+                  <div class="calendrier-legende">
+                      <span class="legende-item">
+                          <span class="legende-point-meeting"></span>
+                          Réunion
+                      </span>
+                      <span class="legende-item">
+                          <span class="legende-point-deadline"></span>
+                          Deadline
+                      </span>
+                  </div>
+              </div>
+
+              <!-- le panneau latéral-->
+              <div class="panneau">
+
+                  <div class="detail-jour">
+                      <h4 id="detail-jour-titre">Sélectionnez un jour</h4>
+                      <div id="detail-jour-list"></div>
+
+                  </div>
+
+                  <div class="deadlines">
+                      <h4>⏰ Deadlines à venir </h4>
+                      <div id="deadlines-list"></div>
+
+                  </div>
+              </div>
+          </div>
+
+      </main>
+      <!-- le modal/popup-->
+     <div class="modal-overlay" id="modal-overlay">
+         <div class="modal">
+             <div class="modal-header">
+                 <h3>Nouvelle tâche</h3>
+                 <button class="modal-close" id="modal-close">&times;</button>
+             </div>
+
+
+             <form id="new-task-form">
+                     <label>Nom de la tâche</label>
+                     <input type="text" name="nom" placeholder="EX: Créer la page forum" required>
+
+                     <label>Description</label>
+                     <textarea name="description" placeholder="Description de la tâche... " rows = "4"></textarea>
+
+
+                     <div class="form-row">
+                         <div class="form-group">
+                             <label> Date début</label>
+                             <input type="date" name="start_date">
+                         </div>
+
+                         <div class="form-group">
+                             <label> Date fin</label>
+                             <input type="date" name="end_date" required>
+                         </div>
+                     </div>
+
+
+                     <div class="form-row">
+                         <div class="form-group">
+                             <label>Catégorie</label>
+                             <select name="category">
+                                 <option value="Frontend">Frontend</option>
+                                 <option value="Backend">Backend</option>
+                                 <option value="Design">Design</option>
+                                 <option value="Autre">Autre</option>
+                             </select>
+                         </div>
+                         <div class="form-group">
+                             <label>Priorité</label>
+                             <select name="priority">
+                                 <option value="normale">Normale</option>
+                                 <option value="basse">Basse</option>
+                                 <option value="haute">Haute</option>
+                             </select>
+                         </div>
+                     </div>
+
+                     <div class="form-row">
+                         <div class="form-group">
+                             <label> Visibilité</label>
+                             <select name="is_public">
+                                 <option value="true">Public</option>
+                                 <option value="false">Privé</option>
+                             </select>
+
+                         </div>
+                         <div class="form-group">
+                             <label>Couleur</label>
+                             <input type="color" name="color" value="#3498db">
+                         </div>
+                     </div>
+                    <div id="task-msg" class="task-msg"></div>
+                    <button type="submit" class="btn-primary btn-full">Créer la tâche</button>
+
+             </form>
+         </div>
+     </div>
+
+      <!-- Modal ajouter un membre -->
+      <div class="modal-overlay" id="modal-membre-overlay">
+          <div class="modal">
+              <div class="modal-header">
+                  <h3>Ajouter un membre</h3>
+                  <button class="modal-close" id="modal-membre-close">&times;</button>
+              </div>
+              <p class="modal-desc">Entrez l'email de la personne à inviter. Elle doit avoir un compte TeamTask.</p>
+              <form id="form-add-membre">
+                  <label>Email du membre</label>
+                  <input type="email" name="email" placeholder="adama@mail.com" required>
+                  <div id="membre-msg" class="task-msg"></div>
+                  <button type="submit" class="btn-primary btn-full">Ajouter au projet</button>
+              </form>
+          </div>
+      </div>
+
+      <!-- Modal pour organiser un reunion -->
+
+      <div class="modal-overlay" id="modal-reunion-overlay">
+          <div class="modal">
+              <div class="modal-header">
+                  <h3>Nouveau réunion</h3>
+                  <button class="modal-close" id="modal-reunion-close">&times;</button>
+              </div>
+
+              <form id="form-add-reunion">
+                  <label> Titre</label>
+                  <input type="text" name="titre" placeholder="réunion ..." required>
+                  <label>Description</label>
+                  <textarea name="description" placeholder="Description du réunion... " rows = "4"></textarea>
+                  <label>Date</label>
+                  <input type="datetime-local" name="date_reunion" required>
+                  <label>Lieu</label>
+                  <input type="text" name="lieu" placeholder="ex: Zoom, Salle B75 ..." required>
+                  <label>Membres</label>
+                  <div id="reunion-membres-list">
+                      <!-- Rempli par JS avec des checkboxes -->
+                  </div>
+                  <div id="reunion-msg" class="task-msg"></div>
+                  <button type="submit" class="btn-primary btn-full">Organiser réunion</button>
+              </form>
+          </div>
+      </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
